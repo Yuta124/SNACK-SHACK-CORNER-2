@@ -276,7 +276,7 @@
   <script>
     let total = 0;
 
-    // For items with size (Regular/Large, sets)
+    // For items with size
     function addItemWithSize(name, sizeValue, qty, sauceValue) {
       let [price, sizeName] = sizeValue.split("|");
       price = parseFloat(price);
@@ -295,7 +295,7 @@
       addToOrder(displayName, qty, cost);
     }
 
-    // For drinks (no size)
+    // For drinks
     function addItem(name, price, qty, sauceValue) {
       price = parseFloat(price);
       qty = parseInt(qty);
@@ -381,16 +381,14 @@
       let shopNumber = "601155075901"; // Your WhatsApp number
       let encodedMsg = encodeURIComponent(message);
 
-      let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      let whatsappApp = "whatsapp://send?phone=" + shopNumber + "&text=" + encodedMsg;
+      let whatsappWeb = "https://web.whatsapp.com/send?phone=" + shopNumber + "&text=" + encodedMsg;
 
-      let url;
-      if (isMobile) {
-        url = "whatsapp://send?phone=" + shopNumber + "&text=" + encodedMsg;
-      } else {
-        url = "https://wa.me/" + shopNumber + "?text=" + encodedMsg;
-      }
-
-      window.open(url, "_blank");
+      // Try app first, then fallback to web
+      window.location.href = whatsappApp;
+      setTimeout(() => {
+        window.open(whatsappWeb, "_blank");
+      }, 800);
     }
   </script>
 
