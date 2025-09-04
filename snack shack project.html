@@ -13,7 +13,6 @@
     h1 {
       text-align: center;
       color: orange;
-	  font-family:bold;
     }
     h2 {
       color: red;
@@ -23,9 +22,6 @@
     h3 {
       color: darkred;
     }
-	.plus {
-      font-size: 30px;
-	}
     .menu {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -40,8 +36,8 @@
       box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
     }
     .item img {
-      width: 280px;
-      height: 220px;
+      width: 180px;
+      height: 140px;
       object-fit: cover;
       border-radius: 8px;
     }
@@ -123,18 +119,15 @@
   </style>
 </head>
 <body>
-  <center>
-  <img src="downloads/mycompanylogo.jpg" alt="my company logo" style="width:350px; height:300px;">
-  </center>
-  
-  <h1> Snack Shack Corner </h1>
+
+  <h1>🍟 Snack Shack Corner 🍔</h1>
 
   <!-- Ala Carte Snacks -->
   <h2>Ala Carte – Snacks</h2>
   <div class="menu">
     <!-- Chicken Popcorn -->
     <div class="item">
-      <img src="downloads/chickenpopcorn.jpg" alt="Chicken Popcorn">
+      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
       <h3>Chicken Popcorn</h3>
       <select id="popcornSize">
         <option value="4">Small - RM4</option>
@@ -152,7 +145,7 @@
 
     <!-- Twist Potato -->
     <div class="item">
-      <img src="downloads/twistpotato.jpg" alt="Twist Potato">
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
       <h3>Twist Potato</h3>
       <select id="potatoDeal">
         <option value="4">1 pc - RM4</option>
@@ -174,7 +167,7 @@
   <div class="menu">
     <!-- Soda Lemonade -->
     <div class="item">
-      <img src="downloads/sodalemonade.jpg" alt="Soda Lemonade">
+      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade">
       <h3>Soda Lemonade</h3>
       Ice:
       <select id="lemonadeIce">
@@ -189,7 +182,7 @@
 
     <!-- Soda Ribena -->
     <div class="item">
-      <img src="downloads/rebina.jpg" alt="Soda Ribena"> 
+      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena">
       <h3>Soda Ribena</h3>
       Ice:
       <select id="ribenaIce">
@@ -208,9 +201,9 @@
   <div class="menu">
     <!-- Chicken Popcorn Set -->
     <div class="item">
-      <img src="downloads/chickenpopcorn.jpg" alt="Chicken Popcorn">  <div class="plus">+</div> <img src="downloads/sodalemonade.jpg" alt="soda lemonade"> 
+      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn Set">
       <h3>Chicken Popcorn Set</h3>
-      Includes: Small Popcorn + 1 Beverage<br>
+      Includes: Small Popcorn + 1 Beverage (can choose)<br>
       Drink:
       <select id="combo1Drink">
         <option value="Soda Lemonade">Soda Lemonade</option>
@@ -234,9 +227,9 @@
 
     <!-- Twist Potato Set -->
     <div class="item">
-      <img src="downloads/twistpotato.jpg" alt="Twist Potato">  <div class="plus">+</div> <img src="downloads/rebina.jpg" alt="rebina">
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato Set">
       <h3>Twist Potato Set</h3>
-      Includes: 1 Twist Potato + 1 Beverage<br>
+      Includes: 1 Twist Potato + 1 Beverage (can choose)<br>
       Drink:
       <select id="combo2Drink">
         <option value="Soda Lemonade">Soda Lemonade</option>
@@ -261,13 +254,13 @@
 
   <!-- Order Summary -->
   <div id="orderSummary">
-    <h2>🧾 Order Summary</h2>
+    <h2>🧾 Your Order</h2>
     <div id="orderList"></div>
     <p><b>Total: RM <span id="total">0</span></b></p>
 
     <!-- Next & Cancel All -->
     <div id="actions">
-      <button id="nextStep" onclick="nextStep()">➡ Next</button>
+      <button id="nextStep" onclick="nextStep()">➡️ Next</button>
       <button id="cancelAll" onclick="cancelAll()">❌ Cancel All</button>
     </div>
 
@@ -342,7 +335,7 @@
       const phone = document.getElementById("custPhone").value;
 
       if (name === "" || phone === "") {
-        alert("⚠ Please fill in your name and phone number!");
+        alert("⚠️ Please fill in your name and phone number!");
         return;
       }
 
