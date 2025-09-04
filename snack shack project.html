@@ -130,8 +130,8 @@
       <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
       <h3>Chicken Popcorn</h3>
       <select id="popcornSize">
-        <option value="4">Regular - RM4</option>
-        <option value="6">Large - RM6</option>
+        <option value="4|Regular">Regular - RM4</option>
+        <option value="6|Large">Large - RM6</option>
       </select><br>
       Sauce:
       <select id="popcornSauce">
@@ -140,7 +140,7 @@
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="popcornQty" value="1" min="1">
-      <button onclick="addItem('Chicken Popcorn', document.getElementById('popcornSize').value, document.getElementById('popcornQty').value, document.getElementById('popcornSauce').value)">Add to Order</button>
+      <button onclick="addItemWithSize('Chicken Popcorn', document.getElementById('popcornSize').value, document.getElementById('popcornQty').value, document.getElementById('popcornSauce').value)">Add to Order</button>
     </div>
 
     <!-- Twist Potato -->
@@ -148,8 +148,8 @@
       <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
       <h3>Twist Potato</h3>
       <select id="potatoDeal">
-        <option value="4">1 pc - RM4</option>
-        <option value="7">2 pcs - RM7</option>
+        <option value="4|1pc">1 pc - RM4</option>
+        <option value="7|2pcs">2 pcs - RM7</option>
       </select><br>
       Sauce:
       <select id="potatoSauce">
@@ -158,7 +158,7 @@
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="potatoQty" value="1" min="1">
-      <button onclick="addItem('Twist Potato', document.getElementById('potatoDeal').value, document.getElementById('potatoQty').value, document.getElementById('potatoSauce').value)">Add to Order</button>
+      <button onclick="addItemWithSize('Twist Potato', document.getElementById('potatoDeal').value, document.getElementById('potatoQty').value, document.getElementById('potatoSauce').value)">Add to Order</button>
     </div>
   </div>
 
@@ -222,7 +222,7 @@
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="combo1Qty" value="1" min="1">
-      <button onclick="addItem('Chicken Popcorn Set ('+document.getElementById('combo1Drink').value+' - '+document.getElementById('combo1Ice').value+')', 6, document.getElementById('combo1Qty').value, document.getElementById('combo1Sauce').value)">Add to Order</button>
+      <button onclick="addItemWithSize('Chicken Popcorn Set ('+document.getElementById('combo1Drink').value+' - '+document.getElementById('combo1Ice').value+')', '6|Regular', document.getElementById('combo1Qty').value, document.getElementById('combo1Sauce').value)">Add to Order</button>
     </div>
 
     <!-- Twist Potato Set -->
@@ -248,7 +248,7 @@
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="combo2Qty" value="1" min="1">
-      <button onclick="addItem('Twist Potato Set ('+document.getElementById('combo2Drink').value+' - '+document.getElementById('combo2Ice').value+')', 6, document.getElementById('combo2Qty').value, document.getElementById('combo2Sauce').value)">Add to Order</button>
+      <button onclick="addItemWithSize('Twist Potato Set ('+document.getElementById('combo2Drink').value+' - '+document.getElementById('combo2Ice').value+')', '6|Regular', document.getElementById('combo2Qty').value, document.getElementById('combo2Sauce').value)">Add to Order</button>
     </div>
   </div>
 
@@ -276,6 +276,26 @@
   <script>
     let total = 0;
 
+    // For items with size (Regular/Large, sets)
+    function addItemWithSize(name, sizeValue, qty, sauceValue) {
+      let [price, sizeName] = sizeValue.split("|");
+      price = parseFloat(price);
+      qty = parseInt(qty);
+
+      let [sauceCost, sauceName] = sauceValue.split("|");
+      sauceCost = parseFloat(sauceCost);
+
+      const cost = (price + sauceCost) * qty;
+
+      let displayName = name + " (" + sizeName + ")";
+      if (sauceName && sauceName !== "None") {
+        displayName += " + " + sauceName;
+      }
+
+      addToOrder(displayName, qty, cost);
+    }
+
+    // For drinks (no size)
     function addItem(name, price, qty, sauceValue) {
       price = parseFloat(price);
       qty = parseInt(qty);
@@ -285,15 +305,20 @@
 
       const cost = (price + sauceCost) * qty;
 
+      let displayName = name;
+      if (sauceName && sauceName !== "None") {
+        displayName += " + " + sauceName;
+      }
+
+      addToOrder(displayName, qty, cost);
+    }
+
+    function addToOrder(displayName, qty, cost) {
       const orderList = document.getElementById("orderList");
       const div = document.createElement("div");
       div.className = "orderItem";
 
       const span = document.createElement("span");
-      let displayName = name;
-      if (sauceName && sauceName !== "None") {
-        displayName += " + " + sauceName;
-      }
       span.textContent = displayName + " x" + qty + " = RM " + cost.toFixed(2);
 
       const cancelBtn = document.createElement("button");
