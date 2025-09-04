@@ -130,14 +130,14 @@
       <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
       <h3>Chicken Popcorn</h3>
       <select id="popcornSize">
-        <option value="4">Small - RM4</option>
+        <option value="4">Regular - RM4</option>
         <option value="6">Large - RM6</option>
       </select><br>
       Sauce:
       <select id="popcornSauce">
-        <option value="0">None</option>
-        <option value="0.5">Chili Sauce (+RM0.50)</option>
-        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="popcornQty" value="1" min="1">
       <button onclick="addItem('Chicken Popcorn', document.getElementById('popcornSize').value, document.getElementById('popcornQty').value, document.getElementById('popcornSauce').value)">Add to Order</button>
@@ -153,9 +153,9 @@
       </select><br>
       Sauce:
       <select id="potatoSauce">
-        <option value="0">None</option>
-        <option value="0.5">Chili Sauce (+RM0.50)</option>
-        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="potatoQty" value="1" min="1">
       <button onclick="addItem('Twist Potato', document.getElementById('potatoDeal').value, document.getElementById('potatoQty').value, document.getElementById('potatoSauce').value)">Add to Order</button>
@@ -177,7 +177,7 @@
       </select><br>
       Price: RM3<br>
       Qty: <input type="number" id="lemonadeQty" value="1" min="1">
-      <button onclick="addItem('Soda Lemonade ('+document.getElementById('lemonadeIce').value+')', 3, document.getElementById('lemonadeQty').value, 0)">Add to Order</button>
+      <button onclick="addItem('Soda Lemonade ('+document.getElementById('lemonadeIce').value+')', 3, document.getElementById('lemonadeQty').value, '0|None')">Add to Order</button>
     </div>
 
     <!-- Soda Ribena -->
@@ -192,7 +192,7 @@
       </select><br>
       Price: RM3<br>
       Qty: <input type="number" id="ribenaQty" value="1" min="1">
-      <button onclick="addItem('Soda Ribena ('+document.getElementById('ribenaIce').value+')', 3, document.getElementById('ribenaQty').value, 0)">Add to Order</button>
+      <button onclick="addItem('Soda Ribena ('+document.getElementById('ribenaIce').value+')', 3, document.getElementById('ribenaQty').value, '0|None')">Add to Order</button>
     </div>
   </div>
 
@@ -203,7 +203,7 @@
     <div class="item">
       <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn Set">
       <h3>Chicken Popcorn Set</h3>
-      Includes: Small Popcorn + 1 Beverage (can choose)<br>
+      Includes: Regular Popcorn + 1 Beverage (can choose)<br>
       Drink:
       <select id="combo1Drink">
         <option value="Soda Lemonade">Soda Lemonade</option>
@@ -217,9 +217,9 @@
       </select><br>
       Sauce:
       <select id="combo1Sauce">
-        <option value="0">None</option>
-        <option value="0.5">Chili Sauce (+RM0.50)</option>
-        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="combo1Qty" value="1" min="1">
       <button onclick="addItem('Chicken Popcorn Set ('+document.getElementById('combo1Drink').value+' - '+document.getElementById('combo1Ice').value+')', 6, document.getElementById('combo1Qty').value, document.getElementById('combo1Sauce').value)">Add to Order</button>
@@ -243,9 +243,9 @@
       </select><br>
       Sauce:
       <select id="combo2Sauce">
-        <option value="0">None</option>
-        <option value="0.5">Chili Sauce (+RM0.50)</option>
-        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
       </select><br>
       Qty: <input type="number" id="combo2Qty" value="1" min="1">
       <button onclick="addItem('Twist Potato Set ('+document.getElementById('combo2Drink').value+' - '+document.getElementById('combo2Ice').value+')', 6, document.getElementById('combo2Qty').value, document.getElementById('combo2Sauce').value)">Add to Order</button>
@@ -276,19 +276,25 @@
   <script>
     let total = 0;
 
-    function addItem(name, price, qty, sauce) {
+    function addItem(name, price, qty, sauceValue) {
       price = parseFloat(price);
       qty = parseInt(qty);
-      sauce = parseFloat(sauce);
-      const cost = (price + sauce) * qty;
+
+      let [sauceCost, sauceName] = sauceValue.split("|");
+      sauceCost = parseFloat(sauceCost);
+
+      const cost = (price + sauceCost) * qty;
 
       const orderList = document.getElementById("orderList");
       const div = document.createElement("div");
       div.className = "orderItem";
 
       const span = document.createElement("span");
-      let sauceText = (sauce > 0) ? " + Sauce" : "";
-      span.textContent = "Selection: " + qty + " x " + name + sauceText + " = RM " + cost.toFixed(2);
+      let displayName = name;
+      if (sauceName && sauceName !== "None") {
+        displayName += " + " + sauceName;
+      }
+      span.textContent = displayName + " x" + qty + " = RM " + cost.toFixed(2);
 
       const cancelBtn = document.createElement("button");
       cancelBtn.textContent = "❌ Cancel";
@@ -365,4 +371,3 @@
 
 </body>
 </html>
-
