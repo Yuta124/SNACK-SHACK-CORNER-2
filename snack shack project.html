@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Snack Shack Corner</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff8e6;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: orange;
+	  font-family:bold;
+    }
+    h2 {
+      color: red;
+      border-bottom: 2px solid orange;
+      padding-bottom: 5px;
+    }
+    h3 {
+      color: darkred;
+    }
+	.plus {
+      font-size: 30px;
+	}
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .item {
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+    }
+    .item img {
+      width: 280px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .item select, .item input {
+      margin-top: 5px;
+      padding: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background: orange;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: red;
+      color: white;
+    }
+    #orderSummary {
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 10px;
+      background: #fff;
+    }
+    #orderSummary h2 {
+      color: red;
+    }
+    .orderItem {
+      margin: 5px 0;
+      padding: 8px;
+      background: #ffe6cc;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .orderItem button {
+      background: red;
+      color: white;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    #actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+    #nextStep {
+      background: green;
+      color: white;
+      font-weight: bold;
+    }
+    #cancelAll {
+      background: red;
+      color: white;
+      font-weight: bold;
+    }
+    #customerForm {
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px dashed orange;
+      display: none;
+    }
+    #customerForm input {
+      display: block;
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+    }
+    #finalConfirm {
+      background: green;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <center>
+  <img src="downloads/mycompanylogo.jpg" alt="my company logo" style="width:350px; height:300px;">
+  </center>
+  
+  <h1> Snack Shack Corner </h1>
+
+  <!-- Ala Carte Snacks -->
+  <h2>Ala Carte – Snacks</h2>
+  <div class="menu">
+    <!-- Chicken Popcorn -->
+    <div class="item">
+      <img src="downloads/chickenpopcorn.jpg" alt="Chicken Popcorn">
+      <h3>Chicken Popcorn</h3>
+      <select id="popcornSize">
+        <option value="4">Small - RM4</option>
+        <option value="6">Large - RM6</option>
+      </select><br>
+      Sauce:
+      <select id="popcornSauce">
+        <option value="0">None</option>
+        <option value="0.5">Chili Sauce (+RM0.50)</option>
+        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="popcornQty" value="1" min="1">
+      <button onclick="addItem('Chicken Popcorn', document.getElementById('popcornSize').value, document.getElementById('popcornQty').value, document.getElementById('popcornSauce').value)">Add to Order</button>
+    </div>
+
+    <!-- Twist Potato -->
+    <div class="item">
+      <img src="downloads/twistpotato.jpg" alt="Twist Potato">
+      <h3>Twist Potato</h3>
+      <select id="potatoDeal">
+        <option value="4">1 pc - RM4</option>
+        <option value="7">2 pcs - RM7</option>
+      </select><br>
+      Sauce:
+      <select id="potatoSauce">
+        <option value="0">None</option>
+        <option value="0.5">Chili Sauce (+RM0.50)</option>
+        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="potatoQty" value="1" min="1">
+      <button onclick="addItem('Twist Potato', document.getElementById('potatoDeal').value, document.getElementById('potatoQty').value, document.getElementById('potatoSauce').value)">Add to Order</button>
+    </div>
+  </div>
+
+  <!-- Ala Carte Beverages -->
+  <h2>Ala Carte – Beverages</h2>
+  <div class="menu">
+    <!-- Soda Lemonade -->
+    <div class="item">
+      <img src="downloads/sodalemonade.jpg" alt="Soda Lemonade">
+      <h3>Soda Lemonade</h3>
+      Ice:
+      <select id="lemonadeIce">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Price: RM3<br>
+      Qty: <input type="number" id="lemonadeQty" value="1" min="1">
+      <button onclick="addItem('Soda Lemonade ('+document.getElementById('lemonadeIce').value+')', 3, document.getElementById('lemonadeQty').value, 0)">Add to Order</button>
+    </div>
+
+    <!-- Soda Ribena -->
+    <div class="item">
+      <img src="downloads/rebina.jpg" alt="Soda Ribena"> 
+      <h3>Soda Ribena</h3>
+      Ice:
+      <select id="ribenaIce">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Price: RM3<br>
+      Qty: <input type="number" id="ribenaQty" value="1" min="1">
+      <button onclick="addItem('Soda Ribena ('+document.getElementById('ribenaIce').value+')', 3, document.getElementById('ribenaQty').value, 0)">Add to Order</button>
+    </div>
+  </div>
+
+  <!-- Combo Section -->
+  <h2>Combo Sets (RM6 each)</h2>
+  <div class="menu">
+    <!-- Chicken Popcorn Set -->
+    <div class="item">
+      <img src="downloads/chickenpopcorn.jpg" alt="Chicken Popcorn">  <div class="plus">+</div> <img src="downloads/sodalemonade.jpg" alt="soda lemonade"> 
+      <h3>Chicken Popcorn Set</h3>
+      Includes: Small Popcorn + 1 Beverage<br>
+      Drink:
+      <select id="combo1Drink">
+        <option value="Soda Lemonade">Soda Lemonade</option>
+        <option value="Soda Ribena">Soda Ribena</option>
+      </select><br>
+      Ice:
+      <select id="combo1Ice">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Sauce:
+      <select id="combo1Sauce">
+        <option value="0">None</option>
+        <option value="0.5">Chili Sauce (+RM0.50)</option>
+        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="combo1Qty" value="1" min="1">
+      <button onclick="addItem('Chicken Popcorn Set ('+document.getElementById('combo1Drink').value+' - '+document.getElementById('combo1Ice').value+')', 6, document.getElementById('combo1Qty').value, document.getElementById('combo1Sauce').value)">Add to Order</button>
+    </div>
+
+    <!-- Twist Potato Set -->
+    <div class="item">
+      <img src="downloads/twistpotato.jpg" alt="Twist Potato">  <div class="plus">+</div> <img src="downloads/rebina.jpg" alt="rebina">
+      <h3>Twist Potato Set</h3>
+      Includes: 1 Twist Potato + 1 Beverage<br>
+      Drink:
+      <select id="combo2Drink">
+        <option value="Soda Lemonade">Soda Lemonade</option>
+        <option value="Soda Ribena">Soda Ribena</option>
+      </select><br>
+      Ice:
+      <select id="combo2Ice">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Sauce:
+      <select id="combo2Sauce">
+        <option value="0">None</option>
+        <option value="0.5">Chili Sauce (+RM0.50)</option>
+        <option value="0.5">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="combo2Qty" value="1" min="1">
+      <button onclick="addItem('Twist Potato Set ('+document.getElementById('combo2Drink').value+' - '+document.getElementById('combo2Ice').value+')', 6, document.getElementById('combo2Qty').value, document.getElementById('combo2Sauce').value)">Add to Order</button>
+    </div>
+  </div>
+
+  <!-- Order Summary -->
+  <div id="orderSummary">
+    <h2>🧾 Order Summary</h2>
+    <div id="orderList"></div>
+    <p><b>Total: RM <span id="total">0</span></b></p>
+
+    <!-- Next & Cancel All -->
+    <div id="actions">
+      <button id="nextStep" onclick="nextStep()">➡ Next</button>
+      <button id="cancelAll" onclick="cancelAll()">❌ Cancel All</button>
+    </div>
+
+    <!-- Customer Form (hidden until Next clicked) -->
+    <div id="customerForm">
+      <h3>Please enter your details:</h3>
+      <label>Name:</label>
+      <input type="text" id="custName" placeholder="Enter your name">
+      <label>Phone Number:</label>
+      <input type="text" id="custPhone" placeholder="Enter your phone number">
+      <button id="finalConfirm" onclick="confirmOrder()">✅ Confirm Order</button>
+    </div>
+  </div>
+
+  <script>
+    let total = 0;
+
+    function addItem(name, price, qty, sauce) {
+      price = parseFloat(price);
+      qty = parseInt(qty);
+      sauce = parseFloat(sauce);
+      const cost = (price + sauce) * qty;
+
+      // create container for order item
+      const orderList = document.getElementById("orderList");
+      const div = document.createElement("div");
+      div.className = "orderItem";
+
+      // item description
+      const span = document.createElement("span");
+      let sauceText = (sauce > 0) ? " + Sauce" : "";
+      span.textContent = "Selection: " + qty + " x " + name + sauceText + " = RM " + cost.toFixed(2);
+
+      // cancel button for single item
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "❌ Cancel";
+      cancelBtn.onclick = function () {
+        orderList.removeChild(div);
+        total -= cost;
+        document.getElementById("total").textContent = total.toFixed(2);
+      };
+
+      div.appendChild(span);
+      div.appendChild(cancelBtn);
+      orderList.appendChild(div);
+
+      // update total
+      total += cost;
+      document.getElementById("total").textContent = total.toFixed(2);
+    }
+
+    // Cancel all orders
+    function cancelAll() {
+      document.getElementById("orderList").innerHTML = "";
+      total = 0;
+      document.getElementById("total").textContent = "0";
+      document.getElementById("customerForm").style.display = "none";
+    }
+
+    // Next step
+    function nextStep() {
+      if (total === 0) {
+        alert("No items in order!");
+      } else {
+        document.getElementById("customerForm").style.display = "block";
+      }
+    }
+
+    // Confirm order
+    function confirmOrder() {
+      const name = document.getElementById("custName").value;
+      const phone = document.getElementById("custPhone").value;
+
+      if (name === "" || phone === "") {
+        alert("⚠ Please fill in your name and phone number!");
+        return;
+      }
+
+      alert("✅ Order confirmed!\nName: " + name + "\nPhone: " + phone + "\nTotal: RM " + total.toFixed(2));
+    }
+  </script>
+
+</body>
+</html>
