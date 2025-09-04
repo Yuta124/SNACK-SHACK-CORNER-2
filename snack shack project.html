@@ -258,13 +258,11 @@
     <div id="orderList"></div>
     <p><b>Total: RM <span id="total">0</span></b></p>
 
-    <!-- Next & Cancel All -->
     <div id="actions">
       <button id="nextStep" onclick="nextStep()">➡️ Next</button>
       <button id="cancelAll" onclick="cancelAll()">❌ Cancel All</button>
     </div>
 
-    <!-- Customer Form (hidden until Next clicked) -->
     <div id="customerForm">
       <h3>Please enter your details:</h3>
       <label>Name:</label>
@@ -284,17 +282,14 @@
       sauce = parseFloat(sauce);
       const cost = (price + sauce) * qty;
 
-      // create container for order item
       const orderList = document.getElementById("orderList");
       const div = document.createElement("div");
       div.className = "orderItem";
 
-      // item description
       const span = document.createElement("span");
       let sauceText = (sauce > 0) ? " + Sauce" : "";
       span.textContent = "Selection: " + qty + " x " + name + sauceText + " = RM " + cost.toFixed(2);
 
-      // cancel button for single item
       const cancelBtn = document.createElement("button");
       cancelBtn.textContent = "❌ Cancel";
       cancelBtn.onclick = function () {
@@ -307,12 +302,10 @@
       div.appendChild(cancelBtn);
       orderList.appendChild(div);
 
-      // update total
       total += cost;
       document.getElementById("total").textContent = total.toFixed(2);
     }
 
-    // Cancel all orders
     function cancelAll() {
       document.getElementById("orderList").innerHTML = "";
       total = 0;
@@ -320,7 +313,6 @@
       document.getElementById("customerForm").style.display = "none";
     }
 
-    // Next step
     function nextStep() {
       if (total === 0) {
         alert("No items in order!");
@@ -329,7 +321,6 @@
       }
     }
 
-    // Confirm order
     function confirmOrder() {
       const name = document.getElementById("custName").value;
       const phone = document.getElementById("custPhone").value;
@@ -339,9 +330,30 @@
         return;
       }
 
-      alert("✅ Order confirmed!\nName: " + name + "\nPhone: " + phone + "\nTotal: RM " + total.toFixed(2));
+      let items = "";
+      const orderItems = document.querySelectorAll("#orderList .orderItem span");
+      orderItems.forEach(item => {
+        items += "- " + item.textContent + "\n";
+      });
+
+      const now = new Date();
+      const dateTime = now.toLocaleString();
+
+      let message = "🍟 *Snack Shack Corner Order* 🍔\n\n";
+      message += "*Customer Name:* " + name + "\n";
+      message += "*Phone:* " + phone + "\n";
+      message += "*Date/Time:* " + dateTime + "\n\n";
+      message += "*Order Details:*\n" + items + "\n";
+      message += "*Total: RM " + total.toFixed(2) + "*\n\n";
+      message += "✅ Thank you for ordering with Snack Shack Corner!";
+
+      let shopNumber = "601155075901"; // Your WhatsApp number
+      let url = "https://wa.me/" + shopNumber + "?text=" + encodeURIComponent(message);
+
+      window.open(url, "_blank");
     }
   </script>
 
 </body>
 </html>
+
