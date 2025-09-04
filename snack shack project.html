@@ -276,7 +276,7 @@
   <script>
     let total = 0;
 
-    // For items with size
+    // Add item with size
     function addItemWithSize(name, sizeValue, qty, sauceValue) {
       let [price, sizeName] = sizeValue.split("|");
       price = parseFloat(price);
@@ -292,10 +292,10 @@
         displayName += " + " + sauceName;
       }
 
-      addToOrder(displayName, qty, cost);
+      addToOrder(displayName, qty, cost, price + sauceCost);
     }
 
-    // For drinks
+    // Add item (drinks)
     function addItem(name, price, qty, sauceValue) {
       price = parseFloat(price);
       qty = parseInt(qty);
@@ -310,15 +310,37 @@
         displayName += " + " + sauceName;
       }
 
-      addToOrder(displayName, qty, cost);
+      addToOrder(displayName, qty, cost, price + sauceCost);
     }
 
-    function addToOrder(displayName, qty, cost) {
+    // Merge duplicate orders
+    function addToOrder(displayName, qty, cost, unitPrice) {
       const orderList = document.getElementById("orderList");
+      const existingItems = orderList.querySelectorAll(".orderItem");
+
+      for (let item of existingItems) {
+        let span = item.querySelector("span");
+        if (span.dataset.name === displayName) {
+          let oldQty = parseInt(span.dataset.qty);
+          let newQty = oldQty + qty;
+          let newCost = unitPrice * newQty;
+
+          span.dataset.qty = newQty;
+          span.textContent = displayName + " x" + newQty + " = RM " + newCost.toFixed(2);
+
+          total += cost;
+          document.getElementById("total").textContent = total.toFixed(2);
+          return;
+        }
+      }
+
+      // Create new line if not duplicate
       const div = document.createElement("div");
       div.className = "orderItem";
 
       const span = document.createElement("span");
+      span.dataset.name = displayName;
+      span.dataset.qty = qty;
       span.textContent = displayName + " x" + qty + " = RM " + cost.toFixed(2);
 
       const cancelBtn = document.createElement("button");
@@ -394,4 +416,6 @@
 
 </body>
 </html>
+
+
 
