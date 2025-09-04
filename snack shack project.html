@@ -348,7 +348,16 @@
       message += "✅ Thank you for ordering with Snack Shack Corner!";
 
       let shopNumber = "601155075901"; // Your WhatsApp number
-      let url = "https://wa.me/" + shopNumber + "?text=" + encodeURIComponent(message);
+      let encodedMsg = encodeURIComponent(message);
+
+      let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      let url;
+      if (isMobile) {
+        url = "whatsapp://send?phone=" + shopNumber + "&text=" + encodedMsg;
+      } else {
+        url = "https://wa.me/" + shopNumber + "?text=" + encodedMsg;
+      }
 
       window.open(url, "_blank");
     }
