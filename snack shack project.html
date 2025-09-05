@@ -132,8 +132,8 @@
     <h3>🍗 Chicken Popcorn</h3>
     Size:
     <select id="popcornSize">
-      <option value="4|Regular">Regular - RM4</option>
-      <option value="6|Large">Large - RM6</option>
+      <option value="6|Regular">Regular - RM6</option>
+      <option value="10|Large">Large - RM10</option>
     </select><br>
     Sauce:
     <select id="popcornSauce">
@@ -150,8 +150,8 @@
     <h3>🥔 Twist Potato</h3>
     Size:
     <select id="potatoDeal">
-      <option value="4|1pc">1 pc - RM4</option>
-      <option value="7|2pcs">2 pcs - RM7</option>
+      <option value="5|1pc">1 pc - RM5</option>
+      <option value="8|2pcs">2 pcs - RM8</option>
     </select><br>
     Qty: <input type="number" id="potatoQty" value="1" min="1">
     <button onclick="addItemWithSize('Twist Potato', potatoDeal.value, potatoQty.value, '0|None')">Add to Order</button>
@@ -166,9 +166,9 @@
     <h3>🥤 Soda Lemonade</h3>
     Ice:
     <select id="lemonadeIce"><option>Normal Ice</option><option>Less Ice</option><option>No Ice</option></select><br>
-    Price: RM3<br>
+    Price: RM5<br>
     Qty: <input type="number" id="lemonadeQty" value="1" min="1">
-    <button onclick="addItem('Soda Lemonade ('+lemonadeIce.value+')', 3, lemonadeQty.value, '0|None')">Add to Order</button>
+    <button onclick="addItem('Soda Lemonade ('+lemonadeIce.value+')', 5, lemonadeQty.value, '0|None')">Add to Order</button>
   </div>
 
   <div class="item">
@@ -176,9 +176,9 @@
     <h3>🥤 Soda Ribena</h3>
     Ice:
     <select id="ribenaIce"><option>Normal Ice</option><option>Less Ice</option><option>No Ice</option></select><br>
-    Price: RM3<br>
+    Price: RM5<br>
     Qty: <input type="number" id="ribenaQty" value="1" min="1">
-    <button onclick="addItem('Soda Ribena ('+ribenaIce.value+')', 3, ribenaQty.value, '0|None')">Add to Order</button>
+    <button onclick="addItem('Soda Ribena ('+ribenaIce.value+')', 5, ribenaQty.value, '0|None')">Add to Order</button>
   </div>
 </div>
 
@@ -210,9 +210,9 @@
       <option value="0|Chili Sauce">Chili Sauce</option>
       <option value="0|Cheese Sauce">Cheese Sauce</option>
     </select><br>
-    Price: RM7<br>
+    Price: RM9<br>
     Qty: <input type="number" id="popcornSetQty" value="1" min="1">
-    <button onclick="addComboSet('Chicken Popcorn Set', 7, popcornSetQty.value, popcornSetBeverage.value, popcornSetIce.value, popcornSetSauce.value)">Add to Order</button>
+    <button onclick="addComboSet('Chicken Popcorn Set', 9, popcornSetQty.value, popcornSetBeverage.value, popcornSetIce.value, popcornSetSauce.value)">Add to Order</button>
   </div>
 
   <div class="item">
@@ -234,9 +234,9 @@
       <option>Less Ice</option>
       <option>No Ice</option>
     </select><br>
-    Price: RM6<br>
+    Price: RM8<br>
     Qty: <input type="number" id="potatoSetQty" value="1" min="1">
-    <button onclick="addComboSet('Twist Potato Set', 6, potatoSetQty.value, potatoSetBeverage.value, potatoSetIce.value, '0|None')">Add to Order</button>
+    <button onclick="addComboSet('Twist Potato Set', 8, potatoSetQty.value, potatoSetBeverage.value, potatoSetIce.value, '0|None')">Add to Order</button>
   </div>
 </div>
 
@@ -529,6 +529,5 @@
 
 </body>
 </html>
-
 
 
