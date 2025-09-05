@@ -27,7 +27,12 @@
     #orderSummary {margin-top: 30px; padding: 20px; border: 2px solid red; border-radius: 10px; background: #fff; text-align: left;}
     #orderSummary h2 {color: red;}
     .orderItem {margin: 5px 0; padding: 8px; background: #ffe6cc; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;}
-    .orderItem button {margin-top: 0; padding: 5px 8px; background: red; color: white;}
+    .orderItem .item-details {flex-grow: 1;}
+    .orderItem .qty-controls {display: flex; align-items: center; gap: 5px;}
+    .orderItem .qty-btn {background: orange; color: white; border: none; border-radius: 3px; cursor: pointer; padding: 3px 8px; font-weight: bold; font-size: 14px;}
+    .orderItem .qty-btn:hover {background: darkorange;}
+    .orderItem .cancel-btn {margin-left: 10px; padding: 5px 8px; background: red; color: white; border: none; border-radius: 5px; cursor: pointer;}
+    .orderItem .cancel-btn:hover {background: darkred;}
     #actions {margin-top: 15px; display: flex; gap: 10px;}
     #nextStep {background: green; color: white; font-weight: bold;}
     #cancelAll {background: red; color: white; font-weight: bold;}
@@ -69,6 +74,10 @@
       #actions button, #finalConfirm {width: 100%;}
       .item .image-combo {
         flex-direction: column;
+      }
+      .item .image-combo img {
+        width: 100%; /* Make images take full width on mobile */
+        height: auto;
       }
     }
   </style>
@@ -262,43 +271,113 @@
     const orderList = document.getElementById("orderList");
     const existingItems = orderList.querySelectorAll(".orderItem");
     for (let item of existingItems) {
-      let span = item.querySelector("span");
-      if (span.dataset.name === displayName) {
-        let oldQty = parseInt(span.dataset.qty);
-        let newQty = oldQty + qty;
-        span.dataset.qty = newQty;
-        span.textContent = displayName + " x" + newQty + " = RM " + (unitPrice * newQty).toFixed(2);
-        total += unitPrice * qty; totalQty += qty;
-        updateTotal(); return;
+      let nameSpan = item.querySelector(".item-details span");
+      if (nameSpan.dataset.name === displayName) {
+        increaseQty(item, qty);
+        return;
       }
     }
+    
     const div = document.createElement("div"); 
     div.className = "orderItem";
-    const span = document.createElement("span");
-    span.dataset.name = displayName; 
-    span.dataset.qty = qty; 
-    span.dataset.unitPrice = unitPrice;
-    span.textContent = displayName + " x" + qty + " = RM " + (unitPrice * qty).toFixed(2);
-    div.appendChild(span);
     
-    // Create and add the remove button
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "❌ Cancel";
-    removeBtn.onclick = function() {
+    const details = document.createElement("div");
+    details.className = "item-details";
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = displayName;
+    nameSpan.dataset.name = displayName;
+    nameSpan.dataset.qty = qty;
+    nameSpan.dataset.unitPrice = unitPrice;
+    details.appendChild(nameSpan);
+
+    const qtyControls = document.createElement("div");
+    qtyControls.className = "qty-controls";
+    
+    // Create and append the plus button first
+    const plusBtn = document.createElement("button");
+    plusBtn.textContent = "+";
+    plusBtn.className = "qty-btn";
+    plusBtn.onclick = () => increaseQty(div);
+    
+    // Create and append the quantity display
+    const qtySpan = document.createElement("span");
+    qtySpan.className = "item-qty";
+    qtySpan.textContent = "x" + qty;
+    
+    // Create and append the minus button
+    const minusBtn = document.createElement("button");
+    minusBtn.textContent = "-";
+    minusBtn.className = "qty-btn";
+    minusBtn.onclick = () => decreaseQty(div);
+
+    // Append in the desired order
+    qtyControls.appendChild(plusBtn);
+    qtyControls.appendChild(qtySpan);
+    qtyControls.appendChild(minusBtn);
+
+    const priceSpan = document.createElement("span");
+    priceSpan.className = "item-price";
+    priceSpan.textContent = "RM " + (unitPrice * qty).toFixed(2);
+    details.appendChild(priceSpan);
+    
+    div.appendChild(details);
+    div.appendChild(qtyControls);
+    
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "❌ Cancel";
+    cancelBtn.className = "cancel-btn";
+    cancelBtn.onclick = function() {
         removeItem(this.parentNode);
     };
-    div.appendChild(removeBtn);
+    div.appendChild(cancelBtn);
 
     orderList.appendChild(div);
     total += unitPrice * qty; totalQty += qty;
     updateTotal();
   }
 
-  // New function to remove a specific item
+  function updateItem(itemElement) {
+    const nameSpan = itemElement.querySelector(".item-details span");
+    const qtySpan = itemElement.querySelector(".item-qty");
+    const priceSpan = itemElement.querySelector(".item-price");
+    
+    const qty = parseInt(nameSpan.dataset.qty);
+    const unitPrice = parseFloat(nameSpan.dataset.unitPrice);
+    
+    qtySpan.textContent = "x" + qty;
+    priceSpan.textContent = "RM " + (qty * unitPrice).toFixed(2);
+    updateTotal();
+  }
+
+  function increaseQty(itemElement, amount = 1) {
+    const nameSpan = itemElement.querySelector(".item-details span");
+    let currentQty = parseInt(nameSpan.dataset.qty);
+    currentQty += amount;
+    nameSpan.dataset.qty = currentQty;
+    
+    total += parseFloat(nameSpan.dataset.unitPrice) * amount;
+    totalQty += amount;
+    updateItem(itemElement);
+  }
+
+  function decreaseQty(itemElement) {
+    const nameSpan = itemElement.querySelector(".item-details span");
+    let currentQty = parseInt(nameSpan.dataset.qty);
+    if (currentQty > 1) {
+        currentQty--;
+        nameSpan.dataset.qty = currentQty;
+        total -= parseFloat(nameSpan.dataset.unitPrice);
+        totalQty--;
+        updateItem(itemElement);
+    } else {
+        removeItem(itemElement);
+    }
+  }
+
   function removeItem(itemElement) {
-    const span = itemElement.querySelector("span");
-    const itemQty = parseInt(span.dataset.qty);
-    const itemPrice = parseFloat(span.dataset.unitPrice);
+    const nameSpan = itemElement.querySelector(".item-details span");
+    const itemQty = parseInt(nameSpan.dataset.qty);
+    const itemPrice = parseFloat(nameSpan.dataset.unitPrice);
     const itemTotalCost = itemQty * itemPrice;
     
     total -= itemTotalCost;
@@ -318,13 +397,16 @@
 
   function syncPopup() {
     document.getElementById("popupOrderList").innerHTML = document.getElementById("orderList").innerHTML;
-    // Add event listeners to the new buttons in the popup
     const popupButtons = document.querySelectorAll("#popupOrderList .orderItem button");
     const orderItems = document.querySelectorAll("#orderList .orderItem");
     popupButtons.forEach((btn, index) => {
-      btn.onclick = function() {
-        removeItem(orderItems[index]);
-      };
+        if (btn.textContent === "+") {
+            btn.onclick = () => increaseQty(orderItems[index]);
+        } else if (btn.textContent === "-") {
+            btn.onclick = () => decreaseQty(orderItems[index]);
+        } else if (btn.textContent.includes("Cancel")) {
+            btn.onclick = () => removeItem(orderItems[index]);
+        }
     });
   }
 
@@ -352,13 +434,18 @@
   function confirmOrder() {
     const name = document.getElementById("custName").value;
     const phone = document.getElementById("custPhone").value;
-    const orderItems = document.querySelectorAll("#orderList span");
+    const orderItems = document.querySelectorAll("#orderList span.item-details span");
     if (!name || !phone) { alert("Please enter your name and phone number!"); return; }
     let items = "";
-    orderItems.forEach(item => { items += item.textContent + "\n"; });
-    let message = "📦 *Snack Shack Corner Order* 🛍️\n\n*Name:* " + name +
+    orderItems.forEach(item => { 
+        let qty = item.dataset.qty;
+        let unitPrice = item.dataset.unitPrice;
+        let totalItemPrice = (parseFloat(qty) * parseFloat(unitPrice)).toFixed(2);
+        items += item.textContent + " x" + qty + " = RM " + totalItemPrice + "\n";
+    });
+    let message = "*SNACK SHACK CORNER ORDER*\n\n*Name:* " + name +
                   "\n*Phone:* " + phone + "\n\n*Order:*\n" + items +
-                  "\n*Total: RM " + total.toFixed(2) + "*\n\n✅ Thank you for ordering with Snack Shack Corner!";
+                  "\n*Total: RM " + total.toFixed(2) + "*\n\nThank you for ordering with Snack Shack Corner!";
     let shopNumber = "601155075901";
     let encodedMsg = encodeURIComponent(message);
 
