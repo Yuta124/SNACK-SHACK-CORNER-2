@@ -3,372 +3,245 @@
 <head>
   <meta charset="UTF-8">
   <title>Snack Shack Corner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {font-family: Arial, sans-serif; background: #fff8e6; margin: 0; padding: 15px;}
-    h1 {text-align: center; color: orange; font-size: 24px; margin-bottom: 10px;}
-    h2 {color: red; border-bottom: 2px solid orange; padding-bottom: 5px; font-size: 20px;}
-    h3 {color: darkred; font-size: 18px;}
-    p.desc {font-size: 14px; color: #444; margin: 6px 0 10px;}
-    
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
+    body {font-family: Arial, sans-serif; background: #fff8e6; margin: 0; padding-bottom: 100px;}
+    h1 {text-align: center; color: orange; margin: 15px 0; font-size: 24px;}
+    h2 {margin: 10px; color: red; font-size: 20px; border-bottom: 2px solid orange;}
+    h3 {color: darkred; margin: 10px 0;}
+    .item {padding: 12px; border-bottom: 1px solid #ddd; background: #fff;}
+    .item img {width: 100%; border-radius: 10px; margin-bottom: 8px;}
+    .desc {font-size: 14px; color: #555; margin: 6px 0 12px;}
+    .controls select, .controls input, .controls button {
+      width: 100%; margin: 6px 0; padding: 10px; font-size: 14px;
     }
-    .item {
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      background: #fff;
-      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
-    }
-    .item img {
-      width: 100%;
-      height: auto;
-      max-height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .item select, .item input {
-      margin-top: 5px;
-      padding: 8px;
-      font-size: 14px;
-      width: 100%;
-      max-width: 200px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: orange;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 14px;
-      width: 100%;
-      max-width: 200px;
-    }
+    button {background: orange; border: none; border-radius: 5px; font-weight: bold;}
     button:hover {background: red; color: white;}
-    
-    #orderSummary {
-      margin-top: 30px;
-      padding: 20px;
-      border: 2px solid red;
-      border-radius: 10px;
-      background: #fff;
+
+    /* Order summary fixed at bottom */
+    #cart-summary {
+      position: fixed; bottom: 0; left: 0; width: 100%; background: #ffe6cc;
+      border-top: 2px solid #f00; padding: 10px;
     }
-    #orderSummary h2 {color: red;}
+    #orderList {max-height: 180px; overflow-y: auto; margin-bottom: 10px;}
     .orderItem {
-      margin: 5px 0;
-      padding: 8px;
-      background: #ffe6cc;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px; background: #fff; border-radius: 6px; margin: 4px 0;
       font-size: 14px;
     }
-    .orderButtons button {
-      background: orange;
-      color: black;
-      margin-left: 4px;
-      padding: 3px 8px;
-      font-size: 13px;
-      border-radius: 4px;
-    }
-    .orderButtons button:hover {background: red; color: white;}
-    
-    #actions {margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px;}
-    #nextStep {background: green; color: white; font-weight: bold;}
-    #cancelAll {background: red; color: white; font-weight: bold;}
-    
-    #customerForm {margin-top: 20px; padding: 15px; border: 2px dashed orange; display: none;}
-    #customerForm input {
-      display: block;
-      margin: 8px 0;
-      padding: 10px;
-      width: 100%;
-      max-width: 300px;
-      font-size: 14px;
-    }
-    #finalConfirm {background: green; color: white; font-weight: bold;}
-    
-    /* Mobile improvements */
-    @media (max-width: 600px) {
-      body {padding: 10px;}
-      h1 {font-size: 20px;}
-      h2 {font-size: 18px;}
-      h3 {font-size: 16px;}
-      p.desc {font-size: 13px;}
-      .menu {grid-template-columns: 1fr;}
-      .item {padding: 12px;}
-      button {font-size: 13px; padding: 8px;}
-    }
+    .orderButtons button {margin-left: 4px; padding: 3px 8px; font-size: 13px;}
+    #cart-actions {display: flex; gap: 8px; margin-top: 8px;}
+    #cart-actions button {flex: 1; padding: 10px;}
+    #checkout {background: green; color: white;}
+    #clear {background: red; color: white;}
   </style>
 </head>
 <body>
 
   <h1>WELCOME TO SNACK SHACK CORNER</h1>
 
-  <!-- Ala Carte Snacks -->
-  <h2>Ala Carte – Snacks</h2>
-  <div class="menu">
-    <div class="item">
-      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
-      <h3>Chicken Popcorn</h3>
-      <p class="desc">Crispy golden popcorn chicken – choose Regular (RM4) or Large (RM6). Add your favorite sauce!</p>
+  <!-- Snacks -->
+  <h2>Snacks</h2>
+  <div class="item">
+    <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
+    <h3>Chicken Popcorn</h3>
+    <p class="desc">Crispy golden popcorn chicken – Regular (RM4) or Large (RM6). Add chili/cheese sauce for RM0.50.</p>
+    <div class="controls">
       <select id="popcornSize">
         <option value="4|Regular">Regular - RM4</option>
         <option value="6|Large">Large - RM6</option>
-      </select><br>
-      Sauce:
+      </select>
       <select id="popcornSauce">
-        <option value="0|None">None</option>
+        <option value="0|None">No Sauce</option>
         <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
-      </select><br>
-      Qty: <input type="number" id="popcornQty" value="1" min="1">
-      <button onclick="addItemWithSize('Chicken Popcorn', document.getElementById('popcornSize').value, document.getElementById('popcornQty').value, document.getElementById('popcornSauce').value)">Add to Order</button>
+      </select>
+      <input type="number" id="popcornQty" value="1" min="1">
+      <button onclick="addItemWithSize('Chicken Popcorn', popcornSize.value, popcornQty.value, popcornSauce.value)">Add to Order</button>
     </div>
+  </div>
 
-    <div class="item">
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
-      <h3>Twist Potato</h3>
-      <p class="desc">Spiral-cut potato on a stick – crunchy outside, soft inside. 1pc RM4 or 2pcs RM7. Add sauce for extra flavor!</p>
+  <div class="item">
+    <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
+    <h3>Twist Potato</h3>
+    <p class="desc">Spiral potato on a stick – 1pc RM4 / 2pcs RM7. Customize with chili/cheese sauce.</p>
+    <div class="controls">
       <select id="potatoDeal">
         <option value="4|1pc">1 pc - RM4</option>
         <option value="7|2pcs">2 pcs - RM7</option>
-      </select><br>
-      Sauce:
+      </select>
       <select id="potatoSauce">
-        <option value="0|None">None</option>
+        <option value="0|None">No Sauce</option>
         <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
-      </select><br>
-      Qty: <input type="number" id="potatoQty" value="1" min="1">
-      <button onclick="addItemWithSize('Twist Potato', document.getElementById('potatoDeal').value, document.getElementById('potatoQty').value, document.getElementById('potatoSauce').value)">Add to Order</button>
+      </select>
+      <input type="number" id="potatoQty" value="1" min="1">
+      <button onclick="addItemWithSize('Twist Potato', potatoDeal.value, potatoQty.value, potatoSauce.value)">Add to Order</button>
     </div>
   </div>
 
-  <!-- Ala Carte Beverages -->
-  <h2>Ala Carte – Beverages</h2>
-  <div class="menu">
-    <div class="item">
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade">
-      <h3>Soda Lemonade</h3>
-      <p class="desc">Refreshing soda mixed with zesty lemon. Perfect on a hot day! RM3 each.</p>
-      Ice:
+  <!-- Beverages -->
+  <h2>Beverages</h2>
+  <div class="item">
+    <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade">
+    <h3>Soda Lemonade – RM3</h3>
+    <p class="desc">Sparkling soda mixed with zesty lemon. Choose ice level.</p>
+    <div class="controls">
       <select id="lemonadeIce">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Qty: <input type="number" id="lemonadeQty" value="1" min="1">
-      <button onclick="addItem('Soda Lemonade ('+document.getElementById('lemonadeIce').value+')', 3, document.getElementById('lemonadeQty').value, '0|None')">Add to Order</button>
-    </div>
-
-    <div class="item">
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena">
-      <h3>Soda Ribena</h3>
-      <p class="desc">Sweet Ribena soda with a fizzy twist. A fruity favorite for RM3.</p>
-      Ice:
-      <select id="ribenaIce">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Qty: <input type="number" id="ribenaQty" value="1" min="1">
-      <button onclick="addItem('Soda Ribena ('+document.getElementById('ribenaIce').value+')', 3, document.getElementById('ribenaQty').value, '0|None')">Add to Order</button>
+        <option>Normal Ice</option><option>Less Ice</option><option>No Ice</option>
+      </select>
+      <input type="number" id="lemonadeQty" value="1" min="1">
+      <button onclick="addItem('Soda Lemonade ('+lemonadeIce.value+')', 3, lemonadeQty.value, '0|None')">Add to Order</button>
     </div>
   </div>
 
-  <!-- Combo Sets -->
-  <h2>Combo Sets (RM6 each)</h2>
-  <div class="menu">
-    <div class="item">
-      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn Set">
-      <h3>Chicken Popcorn Set</h3>
-      <p class="desc">Regular popcorn chicken + 1 beverage (Lemonade or Ribena). Customize ice & sauce. Great value!</p>
-      Drink:
+  <div class="item">
+    <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena">
+    <h3>Soda Ribena – RM3</h3>
+    <p class="desc">Sweet Ribena soda with fizzy twist. Choose ice level.</p>
+    <div class="controls">
+      <select id="ribenaIce">
+        <option>Normal Ice</option><option>Less Ice</option><option>No Ice</option>
+      </select>
+      <input type="number" id="ribenaQty" value="1" min="1">
+      <button onclick="addItem('Soda Ribena ('+ribenaIce.value+')', 3, ribenaQty.value, '0|None')">Add to Order</button>
+    </div>
+  </div>
+
+  <!-- Sets -->
+  <h2>Combo Sets (RM6)</h2>
+  <div class="item">
+    <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn Set">
+    <h3>Chicken Popcorn Set</h3>
+    <p class="desc">Regular popcorn chicken + 1 beverage (Lemonade/Ribena). Customize ice & sauce.</p>
+    <div class="controls">
       <select id="combo1Drink">
         <option value="Soda Lemonade">Soda Lemonade</option>
         <option value="Soda Ribena">Soda Ribena</option>
-      </select><br>
-      Ice:
+      </select>
       <select id="combo1Ice">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Sauce:
+        <option>Normal Ice</option><option>Less Ice</option><option>No Ice</option>
+      </select>
       <select id="combo1Sauce">
-        <option value="0|None">None</option>
+        <option value="0|None">No Sauce</option>
         <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
         <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
-      </select><br>
-      Qty: <input type="number" id="combo1Qty" value="1" min="1">
-      <button onclick="addItemWithSize('Chicken Popcorn Set ('+document.getElementById('combo1Drink').value+' - '+document.getElementById('combo1Ice').value+')', '6|Regular', document.getElementById('combo1Qty').value, document.getElementById('combo1Sauce').value)">Add to Order</button>
-    </div>
-
-    <div class="item">
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato Set">
-      <h3>Twist Potato Set</h3>
-      <p class="desc">1 crispy twist potato + 1 beverage (Lemonade or Ribena). Includes drink ice options & sauce.</p>
-      Drink:
-      <select id="combo2Drink">
-        <option value="Soda Lemonade">Soda Lemonade</option>
-        <option value="Soda Ribena">Soda Ribena</option>
-      </select><br>
-      Ice:
-      <select id="combo2Ice">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Sauce:
-      <select id="combo2Sauce">
-        <option value="0|None">None</option>
-        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
-        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
-      </select><br>
-      Qty: <input type="number" id="combo2Qty" value="1" min="1">
-      <button onclick="addItemWithSize('Twist Potato Set ('+document.getElementById('combo2Drink').value+' - '+document.getElementById('combo2Ice').value+')', '6|Regular', document.getElementById('combo2Qty').value, document.getElementById('combo2Sauce').value)">Add to Order</button>
+      </select>
+      <input type="number" id="combo1Qty" value="1" min="1">
+      <button onclick="addItemWithSize('Chicken Popcorn Set ('+combo1Drink.value+' - '+combo1Ice.value+')', '6|Regular', combo1Qty.value, combo1Sauce.value)">Add to Order</button>
     </div>
   </div>
 
-  <!-- Order Summary -->
-  <div id="orderSummary">
-    <h2>Your Order</h2>
-    <div id="orderList"></div>
-    <p><b>Total: RM <span id="total">0</span></b></p>
-
-    <div id="actions">
-      <button id="nextStep" onclick="nextStep()">➡️ Next</button>
-      <button id="cancelAll" onclick="cancelAll()">❌ Cancel All</button>
+  <div class="item">
+    <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato Set">
+    <h3>Twist Potato Set</h3>
+    <p class="desc">1 Twist Potato + 1 beverage (Lemonade/Ribena). Customize ice & sauce.</p>
+    <div class="controls">
+      <select id="combo2Drink">
+        <option value="Soda Lemonade">Soda Lemonade</option>
+        <option value="Soda Ribena">Soda Ribena</option>
+      </select>
+      <select id="combo2Ice">
+        <option>Normal Ice</option><option>Less Ice</option><option>No Ice</option>
+      </select>
+      <select id="combo2Sauce">
+        <option value="0|None">No Sauce</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
+      </select>
+      <input type="number" id="combo2Qty" value="1" min="1">
+      <button onclick="addItemWithSize('Twist Potato Set ('+combo2Drink.value+' - '+combo2Ice.value+')', '6|Regular', combo2Qty.value, combo2Sauce.value)">Add to Order</button>
     </div>
+  </div>
 
-    <div id="customerForm">
-      <h3>Please enter your details:</h3>
-      <label>Name:</label>
-      <input type="text" id="custName" placeholder="Enter your name">
-      <label>Phone Number:</label>
-      <input type="text" id="custPhone" placeholder="Enter your phone number">
-      <button id="finalConfirm" onclick="confirmOrder()">✅ Confirm Order</button>
+  <!-- Cart Summary -->
+  <div id="cart-summary">
+    <div id="orderList"></div>
+    <div><b>Total: RM <span id="total">0</span></b></div>
+    <div id="cart-actions">
+      <button id="clear" onclick="clearCart()">❌ Clear</button>
+      <button id="checkout" onclick="checkoutWhatsApp()">✅ Checkout</button>
     </div>
   </div>
 
 <script>
   let total = 0;
 
-  function addItemWithSize(name, sizeValue, qty, sauceValue) {
-    let [price, sizeName] = sizeValue.split("|");
-    price = parseFloat(price);
-    qty = parseInt(qty);
-
-    let [sauceCost, sauceName] = sauceValue.split("|");
+  function addItemWithSize(name, sizeVal, qty, sauceVal) {
+    let [price, sizeName] = sizeVal.split("|");
+    price = parseFloat(price); qty = parseInt(qty);
+    let [sauceCost, sauceName] = sauceVal.split("|");
     sauceCost = parseFloat(sauceCost);
-
-    const unitPrice = price + sauceCost;
-    let displayName = name + " (" + sizeName + ")";
-    if (sauceName && sauceName !== "None") {
-      displayName += " + " + sauceName;
-    }
-
-    addToOrder(displayName, qty, unitPrice);
+    let unitPrice = price + sauceCost;
+    let itemName = name + " ("+sizeName+")";
+    if (sauceName && sauceName !== "None") itemName += " + " + sauceName;
+    addToOrder(itemName, qty, unitPrice);
   }
 
-  function addItem(name, price, qty, sauceValue) {
-    price = parseFloat(price);
-    qty = parseInt(qty);
-
-    let [sauceCost, sauceName] = sauceValue.split("|");
+  function addItem(name, price, qty, sauceVal) {
+    price = parseFloat(price); qty = parseInt(qty);
+    let [sauceCost, sauceName] = sauceVal.split("|");
     sauceCost = parseFloat(sauceCost);
-
-    const unitPrice = price + sauceCost;
-    let displayName = name;
-    if (sauceName && sauceName !== "None") {
-      displayName += " + " + sauceName;
-    }
-
-    addToOrder(displayName, qty, unitPrice);
+    let unitPrice = price + sauceCost;
+    let itemName = name;
+    if (sauceName && sauceName !== "None") itemName += " + " + sauceName;
+    addToOrder(itemName, qty, unitPrice);
   }
 
-  function addToOrder(displayName, qty, unitPrice) {
-    const orderList = document.getElementById("orderList");
-    const existingItems = orderList.querySelectorAll(".orderItem");
-
-    for (let item of existingItems) {
-      let span = item.querySelector("span");
-      if (span.dataset.name === displayName) {
-        let oldQty = parseInt(span.dataset.qty);
-        let newQty = oldQty + qty;
-        span.dataset.qty = newQty;
-        span.textContent = displayName + " x" + newQty + " = RM " + (unitPrice * newQty).toFixed(2);
-        total += unitPrice * qty;
+  function addToOrder(name, qty, unitPrice) {
+    const list = document.getElementById("orderList");
+    const items = list.querySelectorAll(".orderItem");
+    for (let i of items) {
+      let span = i.querySelector("span");
+      if (span.dataset.name === name) {
+        let q = parseInt(span.dataset.qty)+qty;
+        span.dataset.qty=q;
+        span.textContent = name+" x"+q+" = RM "+(unitPrice*q).toFixed(2);
+        total += unitPrice*qty;
         document.getElementById("total").textContent = total.toFixed(2);
         return;
       }
     }
-
-    const div = document.createElement("div");
-    div.className = "orderItem";
-
-    const span = document.createElement("span");
-    span.dataset.name = displayName;
-    span.dataset.qty = qty;
-    span.dataset.unitPrice = unitPrice;
-    span.textContent = displayName + " x" + qty + " = RM " + (unitPrice * qty).toFixed(2);
-
-    const btns = document.createElement("div");
-    btns.className = "orderButtons";
-
-    const plusBtn = document.createElement("button");
-    plusBtn.textContent = "+";
-    plusBtn.onclick = function () {
-      let currentQty = parseInt(span.dataset.qty);
-      let newQty = currentQty + 1;
-      span.dataset.qty = newQty;
-      span.textContent = displayName + " x" + newQty + " = RM " + (unitPrice * newQty).toFixed(2);
-      total += unitPrice;
-      document.getElementById("total").textContent = total.toFixed(2);
+    const div=document.createElement("div");div.className="orderItem";
+    const span=document.createElement("span");
+    span.dataset.name=name;span.dataset.qty=qty;span.dataset.unitPrice=unitPrice;
+    span.textContent=name+" x"+qty+" = RM "+(unitPrice*qty).toFixed(2);
+    const btns=document.createElement("div");btns.className="orderButtons";
+    const plus=document.createElement("button");plus.textContent="+";plus.onclick=function(){
+      let q=parseInt(span.dataset.qty)+1;span.dataset.qty=q;
+      span.textContent=name+" x"+q+" = RM "+(unitPrice*q).toFixed(2);
+      total+=unitPrice;document.getElementById("total").textContent=total.toFixed(2);
     };
-
-    const minusBtn = document.createElement("button");
-    minusBtn.textContent = "-";
-    minusBtn.onclick = function () {
-      let currentQty = parseInt(span.dataset.qty);
-      if (currentQty > 1) {
-        let newQty = currentQty - 1;
-        span.dataset.qty = newQty;
-        span.textContent = displayName + " x" + newQty + " = RM " + (unitPrice * newQty).toFixed(2);
-        total -= unitPrice;
-      } else {
-        orderList.removeChild(div);
-        total -= unitPrice;
-      }
-      document.getElementById("total").textContent = total.toFixed(2);
+    const minus=document.createElement("button");minus.textContent="-";minus.onclick=function(){
+      let q=parseInt(span.dataset.qty);
+      if(q>1){q--;span.dataset.qty=q;span.textContent=name+" x"+q+" = RM "+(unitPrice*q).toFixed(2);total-=unitPrice;}
+      else{list.removeChild(div);total-=unitPrice;}
+      document.getElementById("total").textContent=total.toFixed(2);
     };
-
-    const cancelBtn = document.createElement("button");
-    cancelBtn.textContent = "❌ Cancel";
-    cancelBtn.onclick = function () {
-      orderList.removeChild(div);
-      total -= unitPrice * parseInt(span.dataset.qty);
-      document.getElementById("total").textContent = total.toFixed(2);
+    const cancel=document.createElement("button");cancel.textContent="❌";cancel.onclick=function(){
+      list.removeChild(div);total-=unitPrice*parseInt(span.dataset.qty);
+      document.getElementById("total").textContent=total.toFixed(2);
     };
+    btns.append(plus,minus,cancel);div.append(span,btns);list.appendChild(div);
+    total+=unitPrice*qty;document.getElementById("total").textContent=total.toFixed(2);
+  }
 
-    btns.appendChild(plusBtn);
-    btns.appendChild(minusBtn);
-    btns.appendChild(cancelBtn);
+  function clearCart(){document.getElementById("orderList").innerHTML="";total=0;document.getElementById("total").textContent="0";}
+  
+  function checkoutWhatsApp(){
+    if(total===0){alert("No items in cart!");return;}
+    let items="";document.querySelectorAll("#orderList span").forEach(i=>{items+="- "+i.textContent+"\n";});
+    let message="🍟 Snack Shack Corner Order 🍔\n\n"+items+"\nTotal: RM "+total.toFixed(2);
+    let phone="601155075901";let encoded=encodeURIComponent(message);
+    let url=(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent))
+      ? `whatsapp://send?phone=${phone}&text=${encoded}`
+      : `https://web.whatsapp.com/send?phone=${phone}&text=${encoded}`;
+    window.location.href=url;
+  }
+</script>
 
-    div.appendChild(span);
-    div.appendChild(btns);
-    orderList.appendChild(div);
-
-    total += unitPrice * qty;
-    document.getElementBy
-
+</body>
+</html>
 
 
 
