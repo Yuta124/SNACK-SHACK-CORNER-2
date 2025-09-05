@@ -172,6 +172,16 @@
     <h2>🧾 Your Order</h2>
     <div id="orderList"></div>
     <p><b>Total: RM <span id="total">0</span></b></p>
+    <div id="actions">
+      <button id="nextStep" onclick="nextStep()">➡️ Next</button>
+      <button id="cancelAll" onclick="cancelAll()">❌ Cancel All</button>
+    </div>
+    <div id="customerForm">
+      <h3>Please enter your details:</h3>
+      <input type="text" id="custName" placeholder="Enter your name">
+      <input type="text" id="custPhone" placeholder="Enter your phone number">
+      <button id="finalConfirm" onclick="confirmOrder()">✅ Confirm Order</button>
+    </div>
   </div>
 
   <!-- Floating View Order Button -->
@@ -300,6 +310,43 @@
     document.getElementById("orderPopup").style.display = "none";
   }
 
+  function cancelAll() {
+    document.getElementById("orderList").innerHTML = "";
+    total = 0; totalQty = 0;
+    updateTotal();
+    document.getElementById("customerForm").style.display = "none";
+  }
+
+  function nextStep() {
+    if (total === 0) {
+      alert("No items in order!");
+    } else {
+      document.getElementById("customerForm").style.display = "block";
+    }
+  }
+
+  function confirmOrder() {
+    const name = document.getElementById("custName").value;
+    const phone = document.getElementById("custPhone").value;
+    const orderItems = document.querySelectorAll("#orderList span");
+    if (!name || !phone) {
+      alert("Please enter your name and phone number!");
+      return;
+    }
+    let items = "";
+    orderItems.forEach(item => { items += item.textContent + "\n"; });
+    let message = "🍟 *Snack Shack Corner Order* 🍔\n\n";
+    message += "*Name:* "+name+"\n";
+    message += "*Phone:* "+phone+"\n\n";
+    message += "*Order:*\n"+items+"\n";
+    message += "*Total: RM "+total.toFixed(2)+"*\n\n";
+    message += "✅ Thank you for ordering with Snack Shack Corner!";
+    let shopNumber = "601155075901";
+    let encodedMsg = encodeURIComponent(message);
+    window.location.href = "whatsapp://send?phone="+shopNumber+"&text="+encodedMsg;
+    setTimeout(()=>{window.open("https://web.whatsapp.com/send?phone="+shopNumber+"&text="+encodedMsg,"_blank");},800);
+  }
+
   // Hide floating button when inside order section
   window.addEventListener("scroll", function(){
     const orderSummary=document.getElementById("orderSummary").getBoundingClientRect();
@@ -314,8 +361,6 @@
 
 </body>
 </html>
-
-
 
 
 
