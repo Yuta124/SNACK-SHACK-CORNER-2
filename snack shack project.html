@@ -443,9 +443,9 @@
         let totalItemPrice = (parseFloat(qty) * parseFloat(unitPrice)).toFixed(2);
         items += item.textContent + " x" + qty + " = RM " + totalItemPrice + "\n";
     });
-    let message = "*SNACK SHACK CORNER ORDER*\n\n*Name:* " + name +
-                  "\n*Phone:* " + phone + "\n\n*Order:*\n" + items +
-                  "\n*Total: RM " + total.toFixed(2) + "*\n\nThank you for ordering with Snack Shack Corner!";
+    let message = "Your Order from Snack Shack:\n\nName: " + name +
+                  "\nPhone: " + phone + "\n\nOrder:\n" + items +
+                  "\nTotal: RM " + total.toFixed(2) + "\n\nThank you for ordering with Snack Shack Corner!";
     let shopNumber = "601155075901";
     let encodedMsg = encodeURIComponent(message);
 
@@ -470,7 +470,6 @@
 
 </body>
 </html>
-
 
 
 
