@@ -133,6 +133,28 @@
   </div>
 </div>
 
+<!-- Combo Sets -->
+<h2 class="section-title">🍔 Combo Sets</h2>
+<div class="menu">
+  <div class="item">
+    <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=800" alt="Combo A">
+    <h3>🍗 Combo A</h3>
+    <p>Chicken Popcorn (Regular) + Soda Lemonade</p>
+    Price: RM7<br>
+    Qty: <input type="number" id="comboAQty" value="1" min="1">
+    <button onclick="addItem('Combo A (Chicken Popcorn + Lemonade)', 7, comboAQty.value, '0|None')">Add to Order</button>
+  </div>
+
+  <div class="item">
+    <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800" alt="Combo B">
+    <h3>🥔 Combo B</h3>
+    <p>Twist Potato + Soda Ribena</p>
+    Price: RM6<br>
+    Qty: <input type="number" id="comboBQty" value="1" min="1">
+    <button onclick="addItem('Combo B (Twist Potato + Ribena)', 6, comboBQty.value, '0|None')">Add to Order</button>
+  </div>
+</div>
+
 <!-- Order Summary -->
 <div id="orderSummary">
   <h2>🧾 Your Order</h2>
@@ -275,6 +297,7 @@
 
 </body>
 </html>
+
 
 
 
