@@ -7,7 +7,6 @@
   <style>
     body {font-family: Arial, sans-serif; background: #fff8e6; margin: 0; padding: 20px; text-align: center;}
     header {margin-bottom: 20px;}
-    header img {width: 140px; height: auto; display: block; margin: 0 auto 10px;}
     header h1 {color: orange; font-size: 28px; margin: 5px 0;}
     header h2 {color: #b33; font-style: italic; font-size: 16px; margin: 0;}
     h2.section-title {color: red; border-bottom: 2px solid orange; padding-bottom: 5px; text-align: left; margin-top: 30px;}
@@ -53,8 +52,6 @@
 <body>
 
   <header>
-    <!-- Company Logo -->
-    <img src="Screenshot_2025-08-21_211617-removebg-preview (1).jpg" alt="Snack Shack Corner Logo">
     <h1>WELCOME TO SNACK SHACK CORNER</h1>
     <h2>“Snack it like you mean it”</h2>
   </header>
@@ -81,7 +78,7 @@
       <button onclick="addItemWithSize('Chicken Popcorn', popcornSize.value, popcornQty.value, popcornSauce.value)">Add to Order</button>
     </div>
 
-    <!-- Twist Potato (no sauce selection) -->
+    <!-- Twist Potato -->
     <div class="item">
       <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
       <h3>🥔 Twist Potato</h3>
@@ -132,11 +129,10 @@
   <div class="menu">
     <!-- Chicken Popcorn Set -->
     <div class="item">
-      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn Set">
       <h3>🍗 Chicken Popcorn Set</h3>
-      Includes: Regular Chicken Popcorn + 1 Beverage (choose one)<br><br>
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade" width="60"> +
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena" width="60"><br><br>
+      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn" width="120"> +
+      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade" width="120"><br><br>
+      Includes: Regular Chicken Popcorn + 1 Beverage (choose one)<br>
       Drink:
       <select id="combo1Drink">
         <option value="Soda Lemonade">Soda Lemonade</option>
@@ -160,11 +156,10 @@
 
     <!-- Twist Potato Set -->
     <div class="item">
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato Set">
       <h3>🥔 Twist Potato Set</h3>
-      Includes: 1 Twist Potato + 1 Beverage (choose one)<br><br>
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade" width="60"> +
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena" width="60"><br><br>
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato" width="120"> +
+      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena" width="120"><br><br>
+      Includes: 1 Twist Potato + 1 Beverage (choose one)<br>
       Drink:
       <select id="combo2Drink">
         <option value="Soda Lemonade">Soda Lemonade</option>
@@ -203,6 +198,7 @@
   </div>
 
 <script>
+  // Same JS as before (order handling + WhatsApp send)
   let total = 0;
 
   function addItemWithSize(name, sizeValue, qty, sauceValue) {
@@ -300,7 +296,74 @@
     cancelBtn.textContent = "❌ Cancel";
     cancelBtn.onclick = function () {
       orderList.removeChild(div);
-      total -= unitPrice
+      total -= unitPrice * parseInt(span.dataset.qty);
+      document.getElementById("total").textContent = total.toFixed(2);
+    };
+
+    btns.appendChild(plusBtn);
+    btns.appendChild(minusBtn);
+    btns.appendChild(cancelBtn);
+
+    div.appendChild(span);
+    div.appendChild(btns);
+    orderList.appendChild(div);
+
+    total += unitPrice * qty;
+    document.getElementById("total").textContent = total.toFixed(2);
+  }
+
+  function cancelAll() {
+    document.getElementById("orderList").innerHTML = "";
+    total = 0;
+    document.getElementById("total").textContent = "0";
+    document.getElementById("customerForm").style.display = "none";
+  }
+
+  function nextStep() {
+    if (total === 0) {
+      alert("No items in order!");
+    } else {
+      document.getElementById("customerForm").style.display = "block";
+    }
+  }
+
+  function confirmOrder() {
+    const name = document.getElementById("custName").value;
+    const phone = document.getElementById("custPhone").value;
+    const orderItems = document.querySelectorAll("#orderList span");
+
+    if (!name || !phone) {
+      alert("Please enter your name and phone number!");
+      return;
+    }
+
+    let items = "";
+    orderItems.forEach(item => {
+      items += item.textContent + "\n";
+    });
+
+    let message = "New Order from Snack Shack Corner\n\n";
+    message += "Name: " + name + "\n";
+    message += "Phone: " + phone + "\n\n";
+    message += "Order:\n" + items + "\n";
+    message += "Total: RM " + total.toFixed(2);
+
+    let shopNumber = "601155075901"; // your WhatsApp number
+    let encodedMsg = encodeURIComponent(message);
+
+    let whatsappApp = "whatsapp://send?phone=" + shopNumber + "&text=" + encodedMsg;
+    let whatsappWeb = "https://web.whatsapp.com/send?phone=" + shopNumber + "&text=" + encodedMsg;
+
+    window.location.href = whatsappApp;
+    setTimeout(() => {
+      window.open(whatsappWeb, "_blank");
+    }, 800);
+  }
+</script>
+
+</body>
+</html>
+
 
 
 
