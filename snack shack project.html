@@ -28,6 +28,45 @@
     #customerForm {margin-top: 20px; padding: 15px; border: 2px dashed orange; display: none;}
     #customerForm input {display: block; margin: 10px 0; padding: 8px; width: 100%; max-width: 300px;}
     #finalConfirm {background: green; color: white; font-weight: bold;}
+
+    /* 📱 Mobile version styles */
+    @media (max-width: 768px) {
+      body {padding: 10px;}
+
+      header h1 {font-size: 22px;}
+      header h2 {font-size: 14px;}
+
+      h2.section-title {font-size: 18px;}
+
+      .menu {grid-template-columns: 1fr;} /* stack items single column */
+
+      .item {padding: 12px; font-size: 14px;}
+      .item img {width: 100%; height: auto;}
+
+      .item select, .item input {
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
+        margin: 6px 0;
+      }
+
+      .item button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 8px;
+      }
+
+      #orderSummary {font-size: 15px; padding: 15px;}
+      .orderButtons button {padding: 6px 10px; font-size: 16px;}
+
+      #actions {flex-direction: column;}
+      #actions button {width: 100%; font-size: 16px; padding: 12px;}
+
+      #customerForm input {font-size: 16px; padding: 10px; width: 100%;}
+      #finalConfirm {width: 100%; padding: 12px; font-size: 16px;}
+    }
   </style>
 </head>
 <body>
@@ -333,7 +372,18 @@
     let encodedMsg = encodeURIComponent(message);
 
     let whatsappApp = "whatsapp://send?phone=" + shopNumber + "&text=" + encodedMsg;
-    let whatsappWeb = "https://web.whatsapp.com/send
+    let whatsappWeb = "https://web.whatsapp.com/send?phone=" + shopNumber + "&text=" + encodedMsg;
+
+    window.location.href = whatsappApp;
+    setTimeout(() => {
+      window.open(whatsappWeb, "_blank");
+    }, 800);
+  }
+</script>
+
+</body>
+</html>
+
 
 
 
