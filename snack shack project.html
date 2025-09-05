@@ -434,7 +434,7 @@
   function confirmOrder() {
     const name = document.getElementById("custName").value;
     const phone = document.getElementById("custPhone").value;
-    const orderItems = document.querySelectorAll("#orderList span.item-details span");
+    const orderItems = document.querySelectorAll("#orderList .item-details span:first-child");
     if (!name || !phone) { alert("Please enter your name and phone number!"); return; }
     let items = "";
     orderItems.forEach(item => { 
@@ -443,9 +443,9 @@
         let totalItemPrice = (parseFloat(qty) * parseFloat(unitPrice)).toFixed(2);
         items += item.textContent + " x" + qty + " = RM " + totalItemPrice + "\n";
     });
-    let message = "*SNACK SHACK CORNER ORDER*\n\n*Name:* " + name +
-                  "\n*Phone:* " + phone + "\n\n*Order:*\n" + items +
-                  "\n*Total: RM " + total.toFixed(2) + "*\n\nThank you for ordering with Snack Shack Corner!";
+    let message = "SNACK SHACK CORNER ORDER\n\nName: " + name +
+                  "\nPhone: " + phone + "\n\nOrder:\n" + items +
+                  "Total: RM " + total.toFixed(2) + "\n\nThank you for ordering with Snack Shack Corner!";
     let shopNumber = "601155075901";
     let encodedMsg = encodeURIComponent(message);
 
@@ -470,8 +470,6 @@
 
 </body>
 </html>
-
-
 
 
 
