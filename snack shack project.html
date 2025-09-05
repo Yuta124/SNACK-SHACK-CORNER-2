@@ -73,12 +73,59 @@
   <h2>“Snack it like you mean it”</h2>
 </header>
 
-<!-- Snacks -->
+<h2 class="section-title">✨ Combo Sets</h2>
+<div class="menu">
+  <div class="item">
+    <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg">
+    <h3>Chicken Popcorn Set</h3>
+    <p>Regular Chicken Popcorn + 1 Beverage</p>
+    Beverage:
+    <select id="popcornSetBeverage">
+      <option value="Soda Lemonade">Soda Lemonade</option>
+      <option value="Soda Ribena">Soda Ribena</option>
+    </select><br>
+    Ice:
+    <select id="popcornSetIce">
+      <option>Normal Ice</option>
+      <option>Less Ice</option>
+      <option>No Ice</option>
+    </select><br>
+    Sauce:
+    <select id="popcornSetSauce">
+      <option value="0|Chili Sauce">Chili Sauce</option>
+      <option value="0|Cheese Sauce">Cheese Sauce</option>
+    </select><br>
+    Price: RM7<br>
+    Qty: <input type="number" id="popcornSetQty" value="1" min="1">
+    <button onclick="addComboSet('Chicken Popcorn Set', 7, popcornSetQty.value, popcornSetBeverage.value, popcornSetIce.value, popcornSetSauce.value)">Add to Order</button>
+  </div>
+
+  <div class="item">
+    <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg">
+    <h3>Twist Potato Set</h3>
+    <p>1 Twist Potato + 1 Beverage</p>
+    Beverage:
+    <select id="potatoSetBeverage">
+      <option value="Soda Lemonade">Soda Lemonade</option>
+      <option value="Soda Ribena">Soda Ribena</option>
+    </select><br>
+    Ice:
+    <select id="potatoSetIce">
+      <option>Normal Ice</option>
+      <option>Less Ice</option>
+      <option>No Ice</option>
+    </select><br>
+    Price: RM6<br>
+    Qty: <input type="number" id="potatoSetQty" value="1" min="1">
+    <button onclick="addComboSet('Twist Potato Set', 6, potatoSetQty.value, potatoSetBeverage.value, potatoSetIce.value, '0|None')">Add to Order</button>
+  </div>
+</div>
+
 <h2 class="section-title">🍗 Ala Carte – Snacks</h2>
 <div class="menu">
   <div class="item">
     <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg">
-    <h3>🍗 Chicken Popcorn</h3>
+    <h3>Chicken Popcorn</h3>
     Size:
     <select id="popcornSize">
       <option value="4|Regular">Regular - RM4</option>
@@ -96,7 +143,7 @@
 
   <div class="item">
     <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg">
-    <h3>🥔 Twist Potato</h3>
+    <h3>Twist Potato</h3>
     Size:
     <select id="potatoDeal">
       <option value="4|1pc">1 pc - RM4</option>
@@ -107,12 +154,11 @@
   </div>
 </div>
 
-<!-- Beverages -->
 <h2 class="section-title">🥤 Ala Carte – Beverages</h2>
 <div class="menu">
   <div class="item">
     <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg">
-    <h3>🥤 Soda Lemonade</h3>
+    <h3>Soda Lemonade</h3>
     Ice:
     <select id="lemonadeIce"><option>Normal Ice</option><option>Less Ice</option><option>No Ice</option></select><br>
     Price: RM3<br>
@@ -122,7 +168,7 @@
 
   <div class="item">
     <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg">
-    <h3>🥤 Soda Ribena</h3>
+    <h3>Soda Ribena</h3>
     Ice:
     <select id="ribenaIce"><option>Normal Ice</option><option>Less Ice</option><option>No Ice</option></select><br>
     Price: RM3<br>
@@ -131,7 +177,6 @@
   </div>
 </div>
 
-<!-- Order Summary -->
 <div id="orderSummary">
   <h2>🧾 Your Order</h2>
   <div id="orderList"></div>
@@ -148,10 +193,8 @@
   </div>
 </div>
 
-<!-- Floating Button -->
 <div id="viewOrderBtn" onclick="showPopup()">🧾 View Order <span id="orderCount">0</span></div>
 
-<!-- Popup -->
 <div id="orderPopup">
   <div id="orderPopupContent">
     <button id="closePopup" onclick="closePopup()">Close</button>
@@ -183,6 +226,14 @@
     let displayName = name;
     if (sauceName && sauceName !== "None") displayName += " + " + sauceName;
     addToOrder(displayName, qty, unitPrice);
+  }
+
+  function addComboSet(name, price, qty, beverage, ice, sauceValue) {
+    price = parseFloat(price); qty = parseInt(qty);
+    let [sauceCost, sauceName] = sauceValue.split("|");
+    let displayName = name + " (" + beverage + " " + ice + ")";
+    if (sauceName && sauceName !== "None") displayName += " + " + sauceName;
+    addToOrder(displayName, qty, price);
   }
 
   function addToOrder(displayName, qty, unitPrice) {
@@ -249,7 +300,7 @@
     if (!name || !phone) { alert("Please enter your name and phone number!"); return; }
     let items = "";
     orderItems.forEach(item => { items += item.textContent + "\n"; });
-    let message = "🍟 *Snack Shack Corner Order* 🍔\n\n*Name:* " + name +
+    let message = "📦 *Snack Shack Corner Order* 🛍️\n\n*Name:* " + name +
                   "\n*Phone:* " + phone + "\n\n*Order:*\n" + items +
                   "\n*Total: RM " + total.toFixed(2) + "*\n\n✅ Thank you for ordering with Snack Shack Corner!";
     let shopNumber = "601155075901";
