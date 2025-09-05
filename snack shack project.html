@@ -24,8 +24,6 @@
     #orderSummary {margin-top: 30px; padding: 20px; border: 2px solid red; border-radius: 10px; background: #fff; text-align: left;}
     #orderSummary h2 {color: red;}
     .orderItem {margin: 5px 0; padding: 8px; background: #ffe6cc; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;}
-    .orderButtons button {background: orange; color: black; margin-left: 5px; padding: 3px 8px; font-size: 14px; border-radius: 4px;}
-    .orderButtons button:hover {background: red; color: white;}
     #actions {margin-top: 15px; display: flex; gap: 10px;}
     #nextStep {background: green; color: white; font-weight: bold;}
     #cancelAll {background: red; color: white; font-weight: bold;}
@@ -131,64 +129,6 @@
     Qty: <input type="number" id="ribenaQty" value="1" min="1">
     <button onclick="addItem('Soda Ribena ('+ribenaIce.value+')', 3, ribenaQty.value, '0|None')">Add to Order</button>
   </div>
-</div>
-
-<!-- Combo Sets -->
-<h2 class="section-title">🍔 Combo Sets</h2>
-<div class="menu">
-
-  <!-- Chicken Popcorn Combo -->
-  <div class="item">
-    <div style="display:flex; justify-content:center; gap:10px; align-items:center;">
-      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Beverage">
-    </div>
-    <h3>🍗 Chicken Popcorn Combo</h3>
-    <p>Regular Chicken Popcorn + 1 Beverage of your choice</p>
-    Beverage:
-    <select id="comboA_drink">
-      <option value="Soda Lemonade">🥤 Soda Lemonade</option>
-      <option value="Soda Ribena">🥤 Soda Ribena</option>
-    </select><br>
-    Ice:
-    <select id="comboA_ice">
-      <option>Normal Ice</option>
-      <option>No Ice</option>
-    </select><br>
-    Free Sauce:
-    <select id="comboA_sauce">
-      <option value="No Sauce">No Sauce</option>
-      <option value="Cheese Sauce">Cheese Sauce</option>
-      <option value="Chili Sauce">Chili Sauce</option>
-    </select><br>
-    Price: RM8<br>
-    Qty: <input type="number" id="comboAQty" value="1" min="1">
-    <button onclick="addComboA()">Add to Order</button>
-  </div>
-
-  <!-- Twist Potato Combo -->
-  <div class="item">
-    <div style="display:flex; justify-content:center; gap:10px; align-items:center;">
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Beverage">
-    </div>
-    <h3>🥔 Twist Potato Combo</h3>
-    <p>1 pc Twist Potato + 1 Beverage of your choice</p>
-    Beverage:
-    <select id="comboB_drink">
-      <option value="Soda Lemonade">🥤 Soda Lemonade</option>
-      <option value="Soda Ribena">🥤 Soda Ribena</option>
-    </select><br>
-    Ice:
-    <select id="comboB_ice">
-      <option>Normal Ice</option>
-      <option>No Ice</option>
-    </select><br>
-    Price: RM7<br>
-    Qty: <input type="number" id="comboBQty" value="1" min="1">
-    <button onclick="addComboB()">Add to Order</button>
-  </div>
-
 </div>
 
 <!-- Order Summary -->
@@ -312,32 +252,31 @@
     let message = "🍟 *Snack Shack Corner Order* 🍔\n\n*Name:* " + name +
                   "\n*Phone:* " + phone + "\n\n*Order:*\n" + items +
                   "\n*Total: RM " + total.toFixed(2) + "*\n\n✅ Thank you for ordering with Snack Shack Corner!";
-    let whatsappURL = "https://wa.me/60123456789?text=" + encodeURIComponent(message);
-    window.open(whatsappURL, "_blank");
+    let shopNumber = "601155075901";
+    let encodedMsg = encodeURIComponent(message);
+
+    // Detect device
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      window.location.href = "whatsapp://send?phone=" + shopNumber + "&text=" + encodedMsg;
+    } else {
+      window.open("https://web.whatsapp.com/send?phone=" + shopNumber + "&text=" + encodedMsg, "_blank");
+    }
   }
 
-  // Combo A: Chicken Popcorn Set
-  function addComboA() {
-    let drink = document.getElementById("comboA_drink").value;
-    let ice = document.getElementById("comboA_ice").value;
-    let sauce = document.getElementById("comboA_sauce").value;
-    let qty = parseInt(document.getElementById("comboAQty").value);
-    let name = "Combo A: Chicken Popcorn (Regular) + " + drink + " (" + ice + ") + " + sauce;
-    addToOrder(name, qty, 8);
-  }
-
-  // Combo B: Twist Potato Set
-  function addComboB() {
-    let drink = document.getElementById("comboB_drink").value;
-    let ice = document.getElementById("comboB_ice").value;
-    let qty = parseInt(document.getElementById("comboBQty").value);
-    let name = "Combo B: Twist Potato (1pc) + " + drink + " (" + ice + ")";
-    addToOrder(name, qty, 7);
-  }
+  window.addEventListener("scroll", function() {
+    const orderSummary = document.getElementById("orderSummary").getBoundingClientRect();
+    const viewBtn = document.getElementById("viewOrderBtn");
+    if (orderSummary.top < window.innerHeight && orderSummary.bottom > 0) {
+      viewBtn.style.display = "none";
+    } else if (totalQty > 0) {
+      viewBtn.style.display = "block";
+    }
+  });
 </script>
 
 </body>
 </html>
+
 
 
 
