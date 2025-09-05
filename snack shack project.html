@@ -65,6 +65,41 @@
     #closePopup {background: red; color: white; padding: 8px 12px;
       border: none; border-radius: 5px; cursor: pointer; float: right;}
 
+    /* Message Box */
+    .message-box {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+    .message-box-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 80%;
+        max-width: 300px;
+    }
+    .message-box-content p {
+        margin: 0;
+        padding-bottom: 15px;
+    }
+    .message-box-content button {
+        background: orange;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
     /* 📱 Mobile */
     @media screen and (max-width: 768px) {
       .menu {grid-template-columns: 1fr;}
@@ -235,8 +270,26 @@
   </div>
 </div>
 
+<!-- Message Box -->
+<div class="message-box" id="messageBox">
+    <div class="message-box-content">
+        <p id="messageText"></p>
+        <button onclick="hideMessage()">OK</button>
+    </div>
+</div>
+
 <script>
   let total = 0, totalQty = 0;
+
+  // Functions for custom message box
+  function showMessage(text) {
+      document.getElementById("messageText").textContent = text;
+      document.getElementById("messageBox").style.display = "flex";
+  }
+
+  function hideMessage() {
+      document.getElementById("messageBox").style.display = "none";
+  }
 
   function addItemWithSize(name, sizeValue, qty, sauceValue) {
     let [price, sizeName] = sizeValue.split("|");
@@ -396,17 +449,23 @@
   }
 
   function syncPopup() {
-    document.getElementById("popupOrderList").innerHTML = document.getElementById("orderList").innerHTML;
-    const popupButtons = document.querySelectorAll("#popupOrderList .orderItem button");
-    const orderItems = document.querySelectorAll("#orderList .orderItem");
-    popupButtons.forEach((btn, index) => {
-        if (btn.textContent === "+") {
-            btn.onclick = () => increaseQty(orderItems[index]);
-        } else if (btn.textContent === "-") {
-            btn.onclick = () => decreaseQty(orderItems[index]);
-        } else if (btn.textContent.includes("Cancel")) {
-            btn.onclick = () => removeItem(orderItems[index]);
-        }
+    const mainOrderList = document.getElementById("orderList");
+    const popupOrderList = document.getElementById("popupOrderList");
+    // Clear the popup list and rebuild it from the main list
+    popupOrderList.innerHTML = '';
+    const mainOrderItems = mainOrderList.querySelectorAll(".orderItem");
+    mainOrderItems.forEach(item => {
+        const clonedItem = item.cloneNode(true);
+        // The cloned item loses its event listeners, so we re-add them
+        const plusBtn = clonedItem.querySelector('.qty-btn:first-child');
+        const minusBtn = clonedItem.querySelector('.qty-btn:last-child');
+        const cancelBtn = clonedItem.querySelector('.cancel-btn');
+        
+        if (plusBtn) plusBtn.onclick = () => increaseQty(item);
+        if (minusBtn) minusBtn.onclick = () => decreaseQty(item);
+        if (cancelBtn) cancelBtn.onclick = () => removeItem(item);
+        
+        popupOrderList.appendChild(clonedItem);
     });
   }
 
@@ -427,7 +486,7 @@
   }
 
   function nextStep() {
-    if (total === 0) alert("No items in order!");
+    if (total === 0) showMessage("No items in order!");
     else document.getElementById("customerForm").style.display = "block";
   }
 
@@ -435,7 +494,7 @@
     const name = document.getElementById("custName").value;
     const phone = document.getElementById("custPhone").value;
     const orderItems = document.querySelectorAll("#orderList .item-details span:first-child");
-    if (!name || !phone) { alert("Please enter your name and phone number!"); return; }
+    if (!name || !phone) { showMessage("Please enter your name and phone number!"); return; }
     let items = "";
     orderItems.forEach(item => { 
         let qty = item.dataset.qty;
@@ -470,8 +529,6 @@
 
 </body>
 </html>
-
-
 
 
 
