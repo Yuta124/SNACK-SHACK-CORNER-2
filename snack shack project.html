@@ -5,41 +5,169 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Snack Shack Corner</title>
   <style>
-    body {font-family: Arial, sans-serif; background: #fff8e6; margin: 0; padding: 20px; text-align: center;}
-    header {margin-bottom: 20px;}
-    header h1 {color: orange; font-size: 28px; margin: 5px 0;}
-    header h2 {color: #b33; font-style: italic; font-size: 16px; margin: 0;}
-    h2.section-title {color: red; border-bottom: 2px solid orange; padding-bottom: 5px; text-align: left; margin-top: 30px;}
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff8e6;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* 🎨 Title with shadow & design */
+    header {
+      margin-bottom: 20px;
+    }
+    header h1 {
+      color: orange;
+      font-size: 40px;
+      font-weight: bold;
+      text-shadow: 3px 3px 6px black;
+      letter-spacing: 3px;
+      margin: 5px 0;
+      transition: transform 0.3s ease-in-out;
+    }
+    header h2 {
+      color: #b33;
+      font-style: italic;
+      font-size: 18px;
+      margin: 0;
+      text-shadow: 1px 1px 3px #666;
+    }
+
+    h2.section-title {
+      color: red;
+      border-bottom: 2px solid orange;
+      padding-bottom: 5px;
+      text-align: left;
+      margin-top: 30px;
+    }
     h3 {color: darkred; margin-top: 10px;}
-    .menu {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;}
-    .item {border-radius: 10px; padding: 15px; text-align: center; background: #fff; box-shadow: 0px 4px 8px rgba(0,0,0,0.1);}
-    .item img {width: 180px; height: 140px; object-fit: cover; border-radius: 8px;}
-    .item select, .item input {margin-top: 5px; padding: 5px;}
-    button {margin-top: 10px; padding: 8px 15px; background: orange; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;}
-    button:hover {background: red; color: white;}
-    #orderSummary {margin-top: 30px; padding: 20px; border: 2px solid red; border-radius: 10px; background: #fff; text-align: left;}
+
+    /* 🍔 Menu grid */
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    /* 🍟 Menu item (card) */
+    .item {
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .item:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 8px 18px rgba(0,0,0,0.2);
+    }
+    .item img {
+      width: 180px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .item select, .item input {
+      margin-top: 5px;
+      padding: 5px;
+    }
+
+    /* ✨ Button effects */
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      background: orange;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.08);
+      background: red;
+      color: white;
+    }
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* 📋 Order summary */
+    #orderSummary {
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px solid red;
+      border-radius: 10px;
+      background: #fff;
+      text-align: left;
+    }
     #orderSummary h2 {color: red;}
-    .orderItem {margin: 5px 0; padding: 8px; background: #ffe6cc; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;}
-    .orderButtons button {background: orange; color: black; margin-left: 5px; padding: 3px 8px; font-size: 14px; border-radius: 4px;}
-    .orderButtons button:hover {background: red; color: white;}
+    .orderItem {
+      margin: 5px 0;
+      padding: 8px;
+      background: #ffe6cc;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .orderButtons button {
+      background: orange;
+      color: black;
+      margin-left: 5px;
+      padding: 3px 8px;
+      font-size: 14px;
+      border-radius: 4px;
+    }
+    .orderButtons button:hover {
+      background: red;
+      color: white;
+    }
+
     #actions {margin-top: 15px; display: flex; gap: 10px;}
     #nextStep {background: green; color: white; font-weight: bold;}
     #cancelAll {background: red; color: white; font-weight: bold;}
-    #customerForm {margin-top: 20px; padding: 15px; border: 2px dashed orange; display: none;}
-    #customerForm input {display: block; margin: 10px 0; padding: 8px; width: 100%; max-width: 300px;}
+
+    #customerForm {
+      margin-top: 20px;
+      padding: 15px;
+      border: 2px dashed orange;
+      display: none;
+    }
+    #customerForm input {
+      display: block;
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+    }
     #finalConfirm {background: green; color: white; font-weight: bold;}
 
     /* 📱 Mobile version styles */
     @media screen and (max-width: 768px) {
       body {padding: 10px;}
-      header h1 {font-size: 22px;}
+      header h1 {font-size: 28px;}
       header h2 {font-size: 14px;}
       h2.section-title {font-size: 18px;}
       .menu {grid-template-columns: 1fr;}
       .item {padding: 12px; font-size: 14px;}
       .item img {width: 100%; height: auto;}
-      .item select, .item input {font-size: 16px; padding: 10px; width: 100%; margin: 6px 0;}
-      .item button {display: block; width: 100%; padding: 12px; font-size: 16px; margin-top: 8px;}
+      .item select, .item input {
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
+        margin: 6px 0;
+      }
+      .item button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 8px;
+      }
       #orderSummary {font-size: 15px; padding: 15px;}
       .orderButtons button {padding: 6px 10px; font-size: 16px;}
       #actions {flex-direction: column;}
@@ -56,10 +184,9 @@
     <h2>“Snack it like you mean it”</h2>
   </header>
 
-  <!-- Snacks -->
+  <!-- Example Section -->
   <h2 class="section-title">🍗 Ala Carte – Snacks</h2>
   <div class="menu">
-    <!-- Chicken Popcorn -->
     <div class="item">
       <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
       <h3>🍗 Chicken Popcorn</h3>
@@ -76,103 +203,6 @@
       </select><br>
       Qty: <input type="number" id="popcornQty" value="1" min="1">
       <button onclick="addItemWithSize('Chicken Popcorn', popcornSize.value, popcornQty.value, popcornSauce.value)">Add to Order</button>
-    </div>
-
-    <!-- Twist Potato -->
-    <div class="item">
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
-      <h3>🥔 Twist Potato</h3>
-      Size:
-      <select id="potatoDeal">
-        <option value="4|1pc">1 pc - RM4</option>
-        <option value="7|2pcs">2 pcs - RM7</option>
-      </select><br>
-      Qty: <input type="number" id="potatoQty" value="1" min="1">
-      <button onclick="addItemWithSize('Twist Potato', potatoDeal.value, potatoQty.value, '0|None')">Add to Order</button>
-    </div>
-  </div>
-
-  <!-- Beverages -->
-  <h2 class="section-title">🥤 Ala Carte – Beverages</h2>
-  <div class="menu">
-    <div class="item">
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade">
-      <h3>🥤 Soda Lemonade</h3>
-      Ice:
-      <select id="lemonadeIce">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Price: RM3<br>
-      Qty: <input type="number" id="lemonadeQty" value="1" min="1">
-      <button onclick="addItem('Soda Lemonade ('+lemonadeIce.value+')', 3, lemonadeQty.value, '0|None')">Add to Order</button>
-    </div>
-
-    <div class="item">
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena">
-      <h3>🥤 Soda Ribena</h3>
-      Ice:
-      <select id="ribenaIce">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Price: RM3<br>
-      Qty: <input type="number" id="ribenaQty" value="1" min="1">
-      <button onclick="addItem('Soda Ribena ('+ribenaIce.value+')', 3, ribenaQty.value, '0|None')">Add to Order</button>
-    </div>
-  </div>
-
-  <!-- Combo Sets -->
-  <h2 class="section-title">🍽️ Combo Sets (RM6 each)</h2>
-  <div class="menu">
-    <!-- Chicken Popcorn Set -->
-    <div class="item">
-      <h3>🍗 Chicken Popcorn Set</h3>
-      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn" width="120"> +
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade" width="120"><br><br>
-      Includes: Regular Chicken Popcorn + 1 Beverage (choose one)<br>
-      Drink:
-      <select id="combo1Drink">
-        <option value="Soda Lemonade">Soda Lemonade</option>
-        <option value="Soda Ribena">Soda Ribena</option>
-      </select><br>
-      Ice:
-      <select id="combo1Ice">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Sauce:
-      <select id="combo1Sauce">
-        <option value="0|None">None</option>
-        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
-        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
-      </select><br>
-      Qty: <input type="number" id="combo1Qty" value="1" min="1">
-      <button onclick="addItemWithSize('Chicken Popcorn Set ('+combo1Drink.value+' - '+combo1Ice.value+')', '6|Regular', combo1Qty.value, combo1Sauce.value)">Add to Order</button>
-    </div>
-
-    <!-- Twist Potato Set -->
-    <div class="item">
-      <h3>🥔 Twist Potato Set</h3>
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato" width="120"> +
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena" width="120"><br><br>
-      Includes: 1 Twist Potato + 1 Beverage (choose one)<br>
-      Drink:
-      <select id="combo2Drink">
-        <option value="Soda Lemonade">Soda Lemonade</option>
-        <option value="Soda Ribena">Soda Ribena</option>
-      </select><br>
-      Ice:
-      <select id="combo2Ice">
-        <option>Normal Ice</option>
-        <option>Less Ice</option>
-        <option>No Ice</option>
-      </select><br>
-      Qty: <input type="number" id="combo2Qty" value="1" min="1">
-      <button onclick="addItemWithSize('Twist Potato Set ('+combo2Drink.value+' - '+combo2Ice.value+')', '6|Regular', combo2Qty.value, '0|None')">Add to Order</button>
     </div>
   </div>
 
@@ -198,7 +228,6 @@
   </div>
 
 <script>
-  // Same JS as before (order handling + WhatsApp send)
   let total = 0;
 
   function addItemWithSize(name, sizeValue, qty, sauceValue) {
@@ -244,9 +273,7 @@
         let oldQty = parseInt(span.dataset.qty);
         let newQty = oldQty + qty;
         span.dataset.qty = newQty;
-
         span.textContent = displayName + " x" + newQty + " = RM " + (unitPrice * newQty).toFixed(2);
-
         total += unitPrice * qty;
         document.getElementById("total").textContent = total.toFixed(2);
         return;
