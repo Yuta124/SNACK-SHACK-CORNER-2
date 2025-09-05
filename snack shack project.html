@@ -95,7 +95,7 @@
   <h2 class="section-title">🍗 Ala Carte – Snacks</h2>
   <div class="menu">
     <div class="item">
-      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
+      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg">
       <h3>🍗 Chicken Popcorn</h3>
       Size:
       <select id="popcornSize">
@@ -113,7 +113,7 @@
     </div>
 
     <div class="item">
-      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg">
       <h3>🥔 Twist Potato</h3>
       Size:
       <select id="potatoDeal">
@@ -129,7 +129,7 @@
   <h2 class="section-title">🥤 Ala Carte – Beverages</h2>
   <div class="menu">
     <div class="item">
-      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade">
+      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg">
       <h3>🥤 Soda Lemonade</h3>
       Ice:
       <select id="lemonadeIce">
@@ -143,7 +143,7 @@
     </div>
 
     <div class="item">
-      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena">
+      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg">
       <h3>🥤 Soda Ribena</h3>
       Ice:
       <select id="ribenaIce">
@@ -241,7 +241,11 @@
     if (totalItems > 0) {floating.style.display = "flex"; orderCount.textContent = totalItems;}
     else {floating.style.display = "none";}
   }
-  function scrollToOrder() {document.getElementById("orderSummary").scrollIntoView({behavior:"smooth"});}
+
+  function scrollToOrder() {
+    document.getElementById("orderSummary").scrollIntoView({behavior:"smooth"});
+  }
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const floating = document.getElementById("floatingOrder");
@@ -258,6 +262,7 @@
     let displayName=name+" ("+sizeName+")"; if(sauceName && sauceName!=="None"){displayName+=" + "+sauceName;}
     addToOrder(displayName,qty,unitPrice);
   }
+
   function addItem(name, price, qty, sauceValue) {
     price=parseFloat(price); qty=parseInt(qty);
     let [sauceCost, sauceName]=sauceValue.split("|"); sauceCost=parseFloat(sauceCost);
@@ -265,20 +270,122 @@
     if(sauceName && sauceName!=="None"){displayName+=" + "+sauceName;}
     addToOrder(displayName,qty,unitPrice);
   }
+
   function addToOrder(displayName, qty, unitPrice) {
-    const orderList=document.getElementById("orderList"); const existingItems=orderList.querySelectorAll(".orderItem");
-    for(let item of existingItems){let span=item.querySelector("span"); if(span.dataset.name===displayName){
-      let oldQty=parseInt(span.dataset.qty); let newQty=oldQty+qty; span.dataset.qty=newQty;
-      span.textContent=displayName+" x"+newQty+" = RM "+(unitPrice*newQty).toFixed(2);
-      total+=unitPrice*qty; totalItems+=qty; document.getElementById("total").textContent=total.toFixed(2); updateFloatingIcon(); return;}}
+    const orderList=document.getElementById("orderList");
+    const existingItems=orderList.querySelectorAll(".orderItem");
+
+    for(let item of existingItems){
+      let span=item.querySelector("span");
+      if(span.dataset.name===displayName){
+        let oldQty=parseInt(span.dataset.qty); let newQty=oldQty+qty;
+        span.dataset.qty=newQty;
+        span.textContent=displayName+" x"+newQty+" = RM "+(unitPrice*newQty).toFixed(2);
+        total+=unitPrice*qty; totalItems+=qty;
+        document.getElementById("total").textContent=total.toFixed(2);
+        updateFloatingIcon();
+        return;
+      }
+    }
+
     const div=document.createElement("div"); div.className="orderItem";
-    const span=document.createElement("span"); span.dataset.name=displayName; span.dataset.qty=qty; span.dataset.unitPrice=unitPrice;
+    const span=document.createElement("span");
+    span.dataset.name=displayName; span.dataset.qty=qty; span.dataset.unitPrice=unitPrice;
     span.textContent=displayName+" x"+qty+" = RM "+(unitPrice*qty).toFixed(2);
+
     const btns=document.createElement("div"); btns.className="orderButtons";
-    const plusBtn=document.createElement("button"); plusBtn.textContent="+"; plusBtn.onclick=function(){let currentQty=parseInt(span.dataset.qty);
-      let newQty=currentQty+1; span.dataset.qty=newQty; span.textContent=displayName+" x"+newQty+" = RM "+(unitPrice*newQty).toFixed(2);
-      total+=unitPrice; totalItems++; document.getElementById("total").textContent=total.toFixed(2); updateFloatingIcon();};
-    const minusBtn=document.createElement("button"); minusBtn.text
+    const plusBtn=document.createElement("button"); plusBtn.textContent="+";
+    plusBtn.onclick=function(){
+      let currentQty=parseInt(span.dataset.qty); let newQty=currentQty+1;
+      span.dataset.qty=newQty;
+      span.textContent=displayName+" x"+newQty+" = RM "+(unitPrice*newQty).toFixed(2);
+      total+=unitPrice; totalItems++;
+      document.getElementById("total").textContent=total.toFixed(2);
+      updateFloatingIcon();
+    };
+
+    const minusBtn=document.createElement("button"); minusBtn.textContent="-";
+    minusBtn.onclick=function(){
+      let currentQty=parseInt(span.dataset.qty);
+      if(currentQty>1){
+        let newQty=currentQty-1;
+        span.dataset.qty=newQty;
+        span.textContent=displayName+" x"+newQty+" = RM "+(unitPrice*newQty).toFixed(2);
+        total-=unitPrice; totalItems--;
+      } else {
+        div.remove();
+        total-=unitPrice; totalItems--;
+      }
+      document.getElementById("total").textContent=total.toFixed(2);
+      updateFloatingIcon();
+    };
+
+    const cancelBtn=document.createElement("button"); cancelBtn.textContent="❌";
+    cancelBtn.onclick=function(){
+      let qty=parseInt(span.dataset.qty);
+      total-=(unitPrice*qty); totalItems-=qty;
+      div.remove();
+      document.getElementById("total").textContent=total.toFixed(2);
+      updateFloatingIcon();
+    };
+
+    btns.appendChild(plusBtn); btns.appendChild(minusBtn); btns.appendChild(cancelBtn);
+    div.appendChild(span); div.appendChild(btns);
+    orderList.appendChild(div);
+
+    total+=unitPrice*qty; totalItems+=qty;
+    document.getElementById("total").textContent=total.toFixed(2);
+    updateFloatingIcon();
+  }
+
+  function cancelAll() {
+    document.getElementById("orderList").innerHTML="";
+    total=0; totalItems=0;
+    document.getElementById("total").textContent="0";
+    updateFloatingIcon();
+  }
+
+  function nextStep() {
+    document.getElementById("customerForm").style.display="block";
+    document.getElementById("nextStep").style.display="none";
+  }
+
+  function confirmOrder() {
+    let name=document.getElementById("custName").value;
+    let phone=document.getElementById("custPhone").value;
+    const orderItems=document.querySelectorAll("#orderList span");
+
+    if(!name||!phone){
+      alert("Please enter your name and phone number!");
+      return;
+    }
+
+    let items="";
+    orderItems.forEach(item=>{
+      items+=item.textContent+"\n";
+    });
+
+    let message="New Order from Snack Shack Corner\n\n";
+    message+="Name: "+name+"\n";
+    message+="Phone: "+phone+"\n\n";
+    message+="Order:\n"+items+"\n";
+    message+="Total: RM "+total.toFixed(2)+"\n\n";
+    message+="✅ Thank you for ordering with Snack Shack Corner!";
+
+    let shopNumber="601155075901"; // WhatsApp number
+    let encodedMsg=encodeURIComponent(message);
+
+    let whatsappApp="whatsapp://send?phone="+shopNumber+"&text="+encodedMsg;
+    let whatsappWeb="https://web.whatsapp.com/send?phone="+shopNumber+"&text="+encodedMsg;
+
+    window.location.href=whatsappApp;
+    setTimeout(()=>{window.open(whatsappWeb,"_blank");},800);
+  }
+</script>
+
+</body>
+</html>
+
 
 
 
