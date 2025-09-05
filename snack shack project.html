@@ -31,9 +31,10 @@
 
   <h1>🍟 Snack Shack Corner 🍔</h1>
 
-  <!-- Example Ala Carte -->
+  <!-- Ala Carte Snacks -->
   <h2>Ala Carte – Snacks</h2>
   <div class="menu">
+    <!-- Chicken Popcorn -->
     <div class="item">
       <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn">
       <h3>Chicken Popcorn</h3>
@@ -49,6 +50,114 @@
       </select><br>
       Qty: <input type="number" id="popcornQty" value="1" min="1">
       <button onclick="addItemWithSize('Chicken Popcorn', document.getElementById('popcornSize').value, document.getElementById('popcornQty').value, document.getElementById('popcornSauce').value)">Add to Order</button>
+    </div>
+
+    <!-- Twist Potato -->
+    <div class="item">
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato">
+      <h3>Twist Potato</h3>
+      <select id="potatoDeal">
+        <option value="4|1pc">1 pc - RM4</option>
+        <option value="7|2pcs">2 pcs - RM7</option>
+      </select><br>
+      Sauce:
+      <select id="potatoSauce">
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="potatoQty" value="1" min="1">
+      <button onclick="addItemWithSize('Twist Potato', document.getElementById('potatoDeal').value, document.getElementById('potatoQty').value, document.getElementById('potatoSauce').value)">Add to Order</button>
+    </div>
+  </div>
+
+  <!-- Ala Carte Beverages -->
+  <h2>Ala Carte – Beverages</h2>
+  <div class="menu">
+    <!-- Soda Lemonade -->
+    <div class="item">
+      <img src="https://www.acouplecooks.com/wp-content/uploads/2021/12/Lemon-Soda-008-1.jpg" alt="Soda Lemonade">
+      <h3>Soda Lemonade</h3>
+      Ice:
+      <select id="lemonadeIce">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Price: RM3<br>
+      Qty: <input type="number" id="lemonadeQty" value="1" min="1">
+      <button onclick="addItem('Soda Lemonade ('+document.getElementById('lemonadeIce').value+')', 3, document.getElementById('lemonadeQty').value, '0|None')">Add to Order</button>
+    </div>
+
+    <!-- Soda Ribena -->
+    <div class="item">
+      <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg" alt="Soda Ribena">
+      <h3>Soda Ribena</h3>
+      Ice:
+      <select id="ribenaIce">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Price: RM3<br>
+      Qty: <input type="number" id="ribenaQty" value="1" min="1">
+      <button onclick="addItem('Soda Ribena ('+document.getElementById('ribenaIce').value+')', 3, document.getElementById('ribenaQty').value, '0|None')">Add to Order</button>
+    </div>
+  </div>
+
+  <!-- Combo Section -->
+  <h2>Combo Sets (RM6 each)</h2>
+  <div class="menu">
+    <!-- Chicken Popcorn Set -->
+    <div class="item">
+      <img src="https://www.recipetineats.com/tachyon/2025/01/Popcorn-chicken_2-close-up.jpg" alt="Chicken Popcorn Set">
+      <h3>Chicken Popcorn Set</h3>
+      Includes: Regular Popcorn + 1 Beverage (can choose)<br>
+      Drink:
+      <select id="combo1Drink">
+        <option value="Soda Lemonade">Soda Lemonade</option>
+        <option value="Soda Ribena">Soda Ribena</option>
+      </select><br>
+      Ice:
+      <select id="combo1Ice">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Sauce:
+      <select id="combo1Sauce">
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="combo1Qty" value="1" min="1">
+      <button onclick="addItemWithSize('Chicken Popcorn Set ('+document.getElementById('combo1Drink').value+' - '+document.getElementById('combo1Ice').value+')', '6|Regular', document.getElementById('combo1Qty').value, document.getElementById('combo1Sauce').value)">Add to Order</button>
+    </div>
+
+    <!-- Twist Potato Set -->
+    <div class="item">
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg" alt="Twist Potato Set">
+      <h3>Twist Potato Set</h3>
+      Includes: 1 Twist Potato + 1 Beverage (can choose)<br>
+      Drink:
+      <select id="combo2Drink">
+        <option value="Soda Lemonade">Soda Lemonade</option>
+        <option value="Soda Ribena">Soda Ribena</option>
+      </select><br>
+      Ice:
+      <select id="combo2Ice">
+        <option>Normal Ice</option>
+        <option>Less Ice</option>
+        <option>No Ice</option>
+      </select><br>
+      Sauce:
+      <select id="combo2Sauce">
+        <option value="0|None">None</option>
+        <option value="0.5|Chili Sauce">Chili Sauce (+RM0.50)</option>
+        <option value="0.5|Cheese Sauce">Cheese Sauce (+RM0.50)</option>
+      </select><br>
+      Qty: <input type="number" id="combo2Qty" value="1" min="1">
+      <button onclick="addItemWithSize('Twist Potato Set ('+document.getElementById('combo2Drink').value+' - '+document.getElementById('combo2Ice').value+')', '6|Regular', document.getElementById('combo2Qty').value, document.getElementById('combo2Sauce').value)">Add to Order</button>
     </div>
   </div>
 
@@ -93,6 +202,22 @@
     addToOrder(displayName, qty, unitPrice);
   }
 
+  function addItem(name, price, qty, sauceValue) {
+    price = parseFloat(price);
+    qty = parseInt(qty);
+
+    let [sauceCost, sauceName] = sauceValue.split("|");
+    sauceCost = parseFloat(sauceCost);
+
+    const unitPrice = price + sauceCost;
+    let displayName = name;
+    if (sauceName && sauceName !== "None") {
+      displayName += " + " + sauceName;
+    }
+
+    addToOrder(displayName, qty, unitPrice);
+  }
+
   function addToOrder(displayName, qty, unitPrice) {
     const orderList = document.getElementById("orderList");
     const existingItems = orderList.querySelectorAll(".orderItem");
@@ -104,8 +229,7 @@
         let newQty = oldQty + qty;
         span.dataset.qty = newQty;
 
-        let newCost = unitPrice * newQty;
-        span.textContent = displayName + " x" + newQty + " = RM " + newCost.toFixed(2);
+        span.textContent = displayName + " x" + newQty + " = RM " + (unitPrice * newQty).toFixed(2);
 
         total += unitPrice * qty;
         document.getElementById("total").textContent = total.toFixed(2);
@@ -205,7 +329,7 @@
     const now = new Date();
     const dateTime = now.toLocaleString();
 
-    let message = " *Snack Shack Corner Order* \n\n";
+    let message = "🍟 *Snack Shack Corner Order* 🍔\n\n";
     message += "*Customer Name:* " + name + "\n";
     message += "*Phone:* " + phone + "\n";
     message += "*Date/Time:* " + dateTime + "\n\n";
@@ -228,6 +352,7 @@
 
 </body>
 </html>
+
 
 
 
