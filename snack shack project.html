@@ -124,6 +124,7 @@
   <h2>“Snack it like you mean it”</h2>
 </header>
 
+<!-- Snacks -->
 <h2 class="section-title">🍗 Ala Carte – Snacks</h2>
 <div class="menu">
   <div class="item">
@@ -146,18 +147,19 @@
   </div>
 
   <div class="item">
-        <img src="https://st3.depositphotos.com/1005682/19548/i/450/depositphotos_195488838-stock-photo-bowl-full-fish-ball-curry.jpg">
-    <h3>🍢 Curry Fishball</h3>
+    <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg">
+    <h3>🥔 Twist Potato</h3>
     Size:
-        <select id="potatoDeal">
-      <option value="1|3pcs">3 pcs - RM1</option>
-      <option value="2|6pcs">6 pcs - RM2</option>
+    <select id="potatoDeal">
+      <option value="4|1pc">1 pc - RM4</option>
+      <option value="10|3pcs">3 pcs - RM10</option>
     </select><br>
     Qty: <input type="number" id="potatoQty" value="1" min="1">
-        <button onclick="addItemWithSize('Curry Fishball', potatoDeal.value, potatoQty.value, '0|None')">Add to Order</button>
+    <button onclick="addItemWithSize('Twist Potato', potatoDeal.value, potatoQty.value, '0|None')">Add to Order</button>
   </div>
 </div>
 
+<!-- Beverages -->
 <h2 class="section-title">🥤 Ala Carte – Beverages</h2>
 <div class="menu">
   <div class="item">
@@ -181,6 +183,7 @@
   </div>
 </div>
 
+<!-- Combo Sets -->
 <h2 class="section-title">🍽️ Combo Sets</h2>
 <div class="menu">
   <div class="item">
@@ -216,12 +219,12 @@
 
   <div class="item">
     <div class="image-combo">
-              <img src="https://st3.depositphotos.com/1005682/19548/i/450/depositphotos_195488838-stock-photo-bowl-full-fish-ball-curry.jpg">
+      <img src="https://insanelygoodrecipes.com/wp-content/uploads/2024/10/Tornado-Potatoes-5-800x530.jpg">
       <span class="plus">+</span>
       <img src="https://img-global.cpcdn.com/recipes/a77ad73bf9871898/680x781f0.5_0.460532_1.0q80/air-ribena-soda-longan-resipi-foto-utama.jpg">
     </div>
-        <h3>Curry Fishball Set</h3>
-    <p>9pcs Curry Fishball + 1 beverage (can choose)</p>
+    <h3>Twist Potato Set</h3>
+    <p>1 Twist Potato + 1 beverage (can choose)</p>
     Beverage:
     <select id="potatoSetBeverage">
       <option value="Soda Lemonade">Soda Lemonade</option>
@@ -235,10 +238,11 @@
     </select><br>
     Price: RM7<br>
     Qty: <input type="number" id="potatoSetQty" value="1" min="1">
-        <button onclick="addComboSet('Curry Fishball Set', 7, potatoSetQty.value, potatoSetBeverage.value, potatoSetIce.value, '0|None')">Add to Order</button>
+    <button onclick="addComboSet('Twist Potato Set', 7, potatoSetQty.value, potatoSetBeverage.value, potatoSetIce.value, '0|None')">Add to Order</button>
   </div>
 </div>
 
+<!-- Order Summary -->
 <div id="orderSummary">
   <h2>🧾 Your Order</h2>
   <div id="orderList"></div>
@@ -255,8 +259,10 @@
   </div>
 </div>
 
+<!-- Floating Button -->
 <div id="viewOrderBtn" onclick="showPopup()">🧾 View Order <span id="orderCount">0</span></div>
 
+<!-- Popup -->
 <div id="orderPopup">
   <div id="orderPopupContent">
     <button id="closePopup" onclick="closePopup()">Close</button>
@@ -266,6 +272,7 @@
   </div>
 </div>
 
+<!-- Message Box -->
 <div class="message-box" id="messageBox">
     <div class="message-box-content">
         <p id="messageText"></p>
@@ -524,4 +531,16 @@
 
 </body>
 </html>
+
+</body>
+</html>
+
+can u help me to change something
+change the twist potato as Curry Fishball and change the twist potato image as :
+https://st3.depositphotos.com/1005682/19548/i/450/depositphotos_195488838-stock-photo-bowl-full-fish-ball-curry.jpg
+
+make it 3pcs is RM1, 6pcs is RM2
+
+for the set name u change as Curry Fishball Set
+make it as 9pcs Curry Fishball + 1 beverage (can choose)
 
